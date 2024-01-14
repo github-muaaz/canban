@@ -12,7 +12,7 @@ const BtnStyled = styled.button`
   font-weight: 700;
   line-height: normal;
   cursor: pointer;
-  justify-content: space-evenly;
+  justify-content: center;
   
   border-radius: ${({borderR}) => borderR ? borderR : '24px'};
   padding: ${({padding}) => padding ? padding : '15px 25px'};

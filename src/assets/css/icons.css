@@ -1,0 +1,64 @@
+.icon {
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+}
+
+.board {
+    mask-image: url("../icons/board.svg");
+    -webkit-mask-image: url("../icons/board.svg");
+    background-color: #828FA3;
+}
+
+.board--active {
+    mask-image: url("../icons/board-active.svg");
+    -webkit-mask-image: url("../icons/board-active.svg");
+    background-color: white;
+
+}
+
+.board--purple {
+    mask-image: url("../icons/board-purple.svg");
+    -webkit-mask-image: url("../icons/board-purple.svg");
+    background-color: #635FC7;
+}
+
+.circle {
+    mask-image: url("../icons/circle.svg");
+    -webkit-mask-image: url("../icons/circle.svg");
+    background-color: currentColor;
+}
+
+.drop--down {
+    mask-image: url("../icons/drop-down.svg");
+    -webkit-mask-image: url("../icons/drop-down.svg");
+    background-color: #635FC7;
+}
+
+.eye {
+    mask-image: url("../icons/eye.svg");
+    -webkit-mask-image: url("../icons/eye.svg");
+    background-color: #828FA3;
+}
+
+.menu--dots {
+    mask-image: url("../icons/menu-dots.svg");
+    -webkit-mask-image: url("../icons/menu-dots.svg");
+    background-color: #828FA3;
+}
+
+.moon {
+    mask-image: url("../icons/moon.svg");
+    -webkit-mask-image: url("../icons/moon.svg");
+    background-color: #828FA3;
+}
+
+.sun {
+    mask-image: url("../icons/sun.svg");
+    -webkit-mask-image: url("../icons/sun.svg");
+    background-color: #828FA3;
+}
+

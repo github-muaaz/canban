@@ -1,7 +1,6 @@
 import List from "./list";
 import Button from "./button";
-import Icon from "./icon";
-import PurpleGridSvg from "../../../assets/icons/board-purple.svg";
+import Icon from "./icon/icon";
 
 const Ul = ({items}) => {
 
@@ -16,7 +15,7 @@ const Ul = ({items}) => {
             )}
 
             <Button onClick={handleClick} bg={'transparent'} color={'var(--main-purple)'} padding={'16px 20px 16px 35px'} noHover>
-                <Icon src={PurpleGridSvg}/>
+                <Icon icon={'board--purple'}/>
 
                 <span>
                     + Create New Board

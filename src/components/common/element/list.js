@@ -1,7 +1,5 @@
-import Icon from "./icon";
+import Icon from "./icon/icon";
 import styled from "styled-components";
-import GridSvg from "../../../assets/icons/board.svg";
-import ActiveGridSvg from "../../../assets/icons/board-active.svg";
 import BoardContext from "../../../context/boardContext";
 import {useContext} from "react";
 
@@ -31,18 +29,16 @@ const List = ({item}) => {
 
     const isActive = (context, id) => context && context.selectedBoard?.id === id;
 
-    const getIcon = (context, id) => isActive(context, id) ? ActiveGridSvg : GridSvg;
+    const getIcon = (context, id) => isActive(context, id) ? 'board--active' : 'board';
 
     return (
         <LiStyled
             onClick={() => boardContext.onBoardChanged(item)}
             isActive={isActive(boardContext, item.id)}
         >
-            <Icon src={getIcon(boardContext, item.id)}/>
+            <Icon icon={getIcon(boardContext, item.id)}/>
 
-            <span>
-                    {item.title}
-                </span>
+            <span>{item.title}</span>
         </LiStyled>
     )
 }

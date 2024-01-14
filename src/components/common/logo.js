@@ -7,7 +7,7 @@ const Wrapper = styled.div`
   padding: 30px 25px 30px 35px;
   width: 360px;
   transition: .25s;
-  //background-color: yellow;
+  border-bottom: ${({isSidebarOpen}) => isSidebarOpen ? '' : '1px solid var(--lines-light, #E4EBFA)'};
 
   .withoutBrand {
     display: none;
@@ -26,10 +26,10 @@ const Wrapper = styled.div`
   }
 `
 
-const Logo = () => {
+const Logo = ({isSidebarOpen, myRef}) => {
     return (
-        <Wrapper id="brand--box">
-            <Link to={"/launch"}>
+        <Wrapper ref={myRef} isSidebarOpen={isSidebarOpen} id="brand--box">
+            <Link to={"/"}>
                 <div className="flex--row align--itm--center">
                     <img className='withoutBrand' src={logoWithoutBrand} alt={"logo"}/>
                     <img className='withBrand' src={logoWithBrand} alt={"logo"}/>
