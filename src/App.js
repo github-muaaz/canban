@@ -4,6 +4,7 @@ import GlobalStyle from "./utils/globalStyle";
 import styled from "styled-components";
 import {BoardProvider} from "./context/boardContext";
 import Main from "./components/main";
+import ModalContainer from "./components/common/element/modalContainer";
 
 const BoxStyled = styled.div`
   height: 100vh;
@@ -38,7 +39,6 @@ function App() {
         };
     }, []);
 
-
     const handleBoardChange = board => setSelectedBoard(board);
 
     const boardContext = {
@@ -47,14 +47,17 @@ function App() {
 
     return (
         <BoxStyled ref={boxRef}>
-            <BoardProvider value={boardContext}>
-                <Header isSidebarOpen={isSidebarOpen} myRef={navRef}/>
+            <ModalContainer>
+                <BoardProvider value={boardContext}>
+                    <Header isSidebarOpen={isSidebarOpen} myRef={navRef}/>
 
-                <Main isSidebarOpen={isSidebarOpen}
-                      setIsSidebarOpen={setIsSidebarOpen}
-                      headerHeight={headerHeight}
-                />
-            </BoardProvider>
+                    <Main isSidebarOpen={isSidebarOpen}
+                          setIsSidebarOpen={setIsSidebarOpen}
+                          headerHeight={headerHeight}
+                    />
+                </BoardProvider>
+
+            </ModalContainer>
             <GlobalStyle/>
         </BoxStyled>);
 }

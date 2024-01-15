@@ -14,7 +14,13 @@ const Ul = ({items}) => {
                 <List key={item.id} item={item}/>
             )}
 
-            <Button onClick={handleClick} bg={'transparent'} color={'var(--main-purple)'} padding={'16px 20px 16px 35px'} noHover>
+            <Button
+                onClick={handleClick}
+                bg={'transparent'}
+                color={'var(--main-purple)'}
+                padding={'16px 20px 16px 35px'}
+                noHover
+            >
                 <Icon icon={'board--purple'}/>
 
                 <span>

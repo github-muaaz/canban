@@ -1,4 +1,9 @@
 import styled from "styled-components";
+import Modal from "./element/modal";
+import React, {useContext} from "react";
+import ModalContext from "../../context/modalContext";
+import Text from "./element/text";
+import Span from "./element/text/span";
 
 const TaskStyled = styled.div`
   padding: 23px 16px;
@@ -9,20 +14,27 @@ const TaskStyled = styled.div`
   gap: 8px;
 `
 
-const Task = ({ task }) => {
+const Task = ({task}) => {
 
-    const { subtasks } = task;
+    const modalC = useContext(ModalContext);
 
-    return (
-        <TaskStyled className={"flex--column"}>
-            <h2 className={'my--text f--size--15'}>
-                {task.title}
-            </h2>
+    const {subtasks} = task;
 
-            <span className={'my--text f--size--12 medium--grey'}>
-                {`${subtasks.completed} of ${subtasks.completed} subtasks`}
-            </span>
-        </TaskStyled>
+    return (<React.Fragment>
+            <TaskStyled className={"flex--column"} onClick={() => modalC.toggleModal(true)}>
+                <Text content={task.title} fs={'15px'}/>
+
+                <Span content={`${subtasks.completed} of ${subtasks.completed} subtasks`}/>
+            </TaskStyled>
+
+            <Modal>
+                <button onClick={() => modalC.toggleModal(false)}
+                        style={{padding: '30px'}}>
+                    click
+                </button>
+            </Modal>
+        </React.Fragment>
+
     )
 }
 

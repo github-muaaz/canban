@@ -68,10 +68,6 @@ const Sidebar = ({headerHeight, isSidebarOpen, setIsSidebarOpen}) => {
 
     const boardsHeight = headerHeight - btnHeight;
 
-    // console.log(headerHeight)
-    // console.log(btnHeight)
-    // console.log(boardsHeight)
-
     return (
         <WrapperStyled>
             <TempStyled id={"my--inner--sidebar"}/>
@@ -82,7 +78,8 @@ const Sidebar = ({headerHeight, isSidebarOpen, setIsSidebarOpen}) => {
                 <BottomStyled className={'w--100'} ref={btnRef}>
                     <NightModeBtn/>
 
-                    <Button onClick={handleToggle} bg={"transparent"}
+                    <Button onClick={handleToggle}
+                            bg={"transparent"}
                             color={' var(--medium-grey, #828FA3)'}
                             padding={'15px 5px'}
                             noHover

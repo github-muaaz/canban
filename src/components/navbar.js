@@ -4,6 +4,7 @@ import Icon from "./common/element/icon/icon-img";
 import {useContext} from "react";
 import BoardContext from "../context/boardContext";
 import MenuSvg from "../assets/icons/menu-dots.svg";
+import Index from "./common/element/text";
 
 const DivStyled = styled.div`
   padding: 20px 30px;
@@ -18,7 +19,7 @@ const Navbar = () => {
 
     return (
         <DivStyled className="flex--row align--itm--center justify--s--between">
-            <h3 className="my--text f--size--24">{boardContext.selectedBoard?.title}</h3>
+            <Index content={boardContext.selectedBoard?.title} fs={'24px'}/>
 
             <div className="flex--row align--itm--center justify--s--between g--25">
                 <Button>

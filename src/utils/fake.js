@@ -46,6 +46,7 @@ export const boardFake = {
                         completed: 2
                     }
                 },
+
             ]
         },
         {
@@ -92,23 +93,23 @@ export const boardFake = {
 
             ]
         },
-        {
-            id: 4,
-            title: 'DONE',
-            color: "#67E2AE",
-            tasks: [
-                {
-                    id: 5,
-                    columnId: 3,
-                    title: 'Review results of usability tests and iterate',
-                    subtasks: {
-                        count: 3,
-                        completed: 2
-                    }
-                },
-
-
-            ]
-        }
+        // {
+        //     id: 4,
+        //     title: 'DONE',
+        //     color: "#67E2AE",
+        //     tasks: [
+        //         {
+        //             id: 5,
+        //             columnId: 3,
+        //             title: 'Review results of usability tests and iterate',
+        //             subtasks: {
+        //                 count: 3,
+        //                 completed: 2
+        //             }
+        //         },
+        //
+        //
+        //     ]
+        // },
     ]
 }

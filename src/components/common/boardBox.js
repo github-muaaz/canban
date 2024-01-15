@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import {useState} from "react";
+import styled from "styled-components";
 import {boardFake} from "../../utils/fake";
 import EmptyBoards from "./emptyBoards";
 import Board from "./board";
@@ -7,8 +7,7 @@ import Board from "./board";
 const BoxStyled = styled.div`
   background: var(--light-grey-light-bg, #F4F7FD);
   position: relative;
-
-  width: calc(100vw - ${({pWidth}) => pWidth});
+  overflow-x: auto;
 `
 
 const BoardBox = () => {
@@ -18,7 +17,7 @@ const BoardBox = () => {
     const isEmpty = board.columns.filter(c => c.tasks?.length > 0).length <= 0;
 
     return (
-        <BoxStyled className={"board--box"} pWidth={'100px'}>
+        <BoxStyled className={"board--box w--100"}>
             {isEmpty ? <EmptyBoards/> : <Board board={board}/>}
         </BoxStyled>
     )

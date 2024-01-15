@@ -1,7 +1,8 @@
-import Icon from "./icon/icon";
+import {useContext} from "react";
 import styled from "styled-components";
 import BoardContext from "../../../context/boardContext";
-import {useContext} from "react";
+import Icon from "./icon/icon";
+import Span from "./text/span";
 
 const LiStyled = styled.li`
   display: flex;
@@ -9,17 +10,11 @@ const LiStyled = styled.li`
   gap: 16px;
   border-radius: 0 100px 100px 0;
   padding: 16px 30px 16px 35px;
-  overflow: hidden;
   cursor: pointer;
   background: ${({isActive}) => isActive ? 'var(--main-purple, #635FC7)' : ''};
 
   span {
     color: ${({isActive}) => isActive ? 'var(--white, #FFF)' : 'var(--medium-grey, #828FA3)'};
-    font-feature-settings: 'clig' off, 'liga' off;
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
   }
 `
 
@@ -38,7 +33,7 @@ const List = ({item}) => {
         >
             <Icon icon={getIcon(boardContext, item.id)}/>
 
-            <span>{item.title}</span>
+            <Span content={item.title} fs={'15px'}/>
         </LiStyled>
     )
 }

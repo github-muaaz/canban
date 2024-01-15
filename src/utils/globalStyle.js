@@ -10,6 +10,13 @@ export default createGlobalStyle(css`
     font-family: 'Plus Jakarta Sans', sans-serif;
   }
 
+  .center--v--g{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
   circle{
     transition: .4s;
   }
@@ -39,6 +46,10 @@ export default createGlobalStyle(css`
   .g--12 {
     gap: 12px !important;
   }
+  
+  .m--top--40{
+    margin-top: 40px;
+  }
 
   .h--100 {
     height: 100% !important;
@@ -52,42 +63,15 @@ export default createGlobalStyle(css`
     padding: 25px !important;
   }
   
-  .f--size--15{
-    font-size: 15px !important;
-  }
-  
   .f--size--24 {
     font-size: 24px !important;
-  }
-  
-  .f--size--12 {
-    font-size: 12px !important;
-  }
-  
-  .letter--spc--24{
-    letter-spacing: 2.4px !important;
   }
   
   .medium--grey{
     color: var(--medium-grey, #828FA3) !important;
   }
   
-  .my--text{
-    color: var(--black, #000112);
-    font-feature-settings: 'clig' off, 'liga' off;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-  }
-
   .board--subtitle {
-    color: var(--medium-grey, #828FA3);
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    letter-spacing: 2.4px;
     margin-left: 35px;
     margin-bottom: 19px;
   }
