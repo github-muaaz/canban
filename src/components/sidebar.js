@@ -66,14 +66,14 @@ const Sidebar = ({headerHeight, isSidebarOpen, setIsSidebarOpen}) => {
         }
     }
 
-    const boardsHeight = headerHeight - btnHeight;
+    const cutBoardsHeight = headerHeight + btnHeight;
 
     return (
         <WrapperStyled>
             <TempStyled id={"my--inner--sidebar"}/>
 
             <DivStyled id={"my--sidebar"}>
-                <SidebarBoards height={boardsHeight}/>
+                <SidebarBoards cutHeight={cutBoardsHeight}/>
 
                 <BottomStyled className={'w--100'} ref={btnRef}>
                     <NightModeBtn/>

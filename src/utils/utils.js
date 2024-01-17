@@ -16,3 +16,7 @@ export const mapToUrl = (str) => {
 
     return url
 }
+
+export const getCompletedCount = items => {
+    return items.filter(i => !!i.isCompleted).length;
+}

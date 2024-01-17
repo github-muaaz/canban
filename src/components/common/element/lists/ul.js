@@ -1,6 +1,6 @@
 import List from "./list";
-import Button from "./button";
-import Icon from "./icon/icon";
+import Button from "../button";
+import Icon from "../icon/icon";
 
 const Ul = ({items}) => {
 

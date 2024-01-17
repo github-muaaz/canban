@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 const IconStyled = styled.div`
-    width: ${({width}) => width ? width : '16px'};
-  height: ${({height}) => height ? height : '16px'};
+    width: ${({w}) => w ? w : '16px'};
+  height: ${({h}) => h ? h : '16px'};
   cursor: pointer;
 `
 

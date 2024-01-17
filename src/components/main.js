@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Sidebar from "./sidebar";
-import BoardBox from "./common/boardBox";
+import Board from "./common/board";
 
 const MainStyled = styled.main`
   height: calc(100vh - ${({height}) => height});
@@ -17,7 +17,7 @@ const Main = ({isSidebarOpen, setIsSidebarOpen, headerHeight}) => {
                 setIsSidebarOpen={setIsSidebarOpen}
             />
 
-            <BoardBox/>
+            <Board/>
         </MainStyled>
     )
 }

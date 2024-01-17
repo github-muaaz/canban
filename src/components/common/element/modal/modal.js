@@ -5,15 +5,16 @@ const ModalStyled = styled.div`
   border-radius: 6px;
   background: var(--white, #FFF);
   z-index: 900;
-  background-color: red;
-  padding: 20px;
+  padding: 32px;
+  width: 32%;
+  gap: 20px;
 `
 
 const Modal = ({children}) => {
 
     let modal = (
         <div style={{display: 'none'}}>
-            <ModalStyled id={'modal--body'} className={'center--v--g'}>
+            <ModalStyled id={'modal--body'} className={'center--v--g flex--column'}>
                 {children}
             </ModalStyled>
         </div>

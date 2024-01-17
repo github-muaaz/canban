@@ -9,6 +9,10 @@ export default createGlobalStyle(css`
     box-sizing: border-box;
     font-family: 'Plus Jakarta Sans', sans-serif;
   }
+  
+  a{
+    text-decoration: none;
+  }
 
   .center--v--g{
     position: absolute;
@@ -34,17 +38,32 @@ export default createGlobalStyle(css`
   .align--itm--center {
     align-items: center !important;
   }
+  .align--itm--start {
+    align-items: flex-start !important;
+  }
 
   .justify--s--between {
     justify-content: space-between !important;
   }
 
+  .g--8{
+    gap: 8px !important;
+  }
+  
   .g--25 {
     gap: 25px !important;
   }
 
+  .g--24 {
+    gap: 24px !important;
+  }
+
   .g--12 {
     gap: 12px !important;
+  }
+
+  .g--16 {
+    gap: 16px !important;
   }
   
   .m--top--40{
@@ -65,6 +84,14 @@ export default createGlobalStyle(css`
   
   .f--size--24 {
     font-size: 24px !important;
+  }
+  
+  .font--weight--5{
+    font-weight: 500 !important;
+  }
+  
+  .l--height--23{
+    line-height: 23px !important;
   }
   
   .medium--grey{

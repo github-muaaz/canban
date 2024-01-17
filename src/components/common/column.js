@@ -27,7 +27,7 @@ const Column = ({column}) => {
             <div className={'flex--row align--itm--center g--12'} style={{color: column.color}}>
                 <Icon icon={'circle'}/>
 
-                <Span content={`column.title (${column.tasks.length})`}/>
+                <Span content={`${column.title} (${column.tasks.length})`} lSpace={'2.4px'}/>
             </div>
 
 

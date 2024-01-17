@@ -1,8 +1,8 @@
 import {useContext} from "react";
 import styled from "styled-components";
-import BoardContext from "../../../context/boardContext";
-import Icon from "./icon/icon";
-import Span from "./text/span";
+import BoardContext from "../../../../context/boardContext";
+import Icon from "../icon/icon";
+import Span from "../text/span";
 
 const LiStyled = styled.li`
   display: flex;
@@ -22,7 +22,7 @@ const List = ({item}) => {
 
     const boardContext = useContext(BoardContext);
 
-    const isActive = (context, id) => context && context.selectedBoard?.id === id;
+    const isActive = (context, id) => context && context.getSelectedBoard()?.id === id;
 
     const getIcon = (context, id) => isActive(context, id) ? 'board--active' : 'board';
 

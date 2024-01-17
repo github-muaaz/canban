@@ -9,6 +9,7 @@ const TextStyled = styled.p`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  margin: 0;
 `
 
 const Index = ({content, ...rest}) => {

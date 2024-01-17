@@ -24,10 +24,10 @@ const BtnStyled = styled.button`
     background: ${({noHover}) => noHover ? noHover : 'var(--main-purple-hover, #635FC7)'};
   }
 `
-const Button = ({children, ...rest}) => {
+const Button = ({children, title, ...rest}) => {
 
     return <BtnStyled {...rest}>
-        {children}
+        {title || children}
     </BtnStyled>
 }
 
