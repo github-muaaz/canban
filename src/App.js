@@ -19,7 +19,7 @@ function App() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [headerHeight, setHeaderHeight] = useState(0);
     const [selectedBoard, setSelectedBoard] = useState();
-    const [boardItems, setBoardItems] = useState();
+    const [boardTasks, setBoardTasks] = useState();
 
 
     const setHeights = () => {
@@ -44,7 +44,8 @@ function App() {
 
     const handleBoardChange = board => setSelectedBoard(board);
     const handleGetSelectedBoard = () => selectedBoard;
-    const handleGetBoardItems = () => boardItems;
+    const handleGetBoardTasks = () => boardTasks;
+    const handleSetBoardTasks = (tasks) => setBoardTasks(tasks);
 
     useEffect(() => {
         console.log('selected board changed', selectedBoard);
@@ -52,12 +53,13 @@ function App() {
         // backend call
         const res = getBoard(selectedBoard?.id);
 
-        setBoardItems(res);
+        setBoardTasks(res);
     }, [selectedBoard])
 
 
     const boardContext = {
-        getBoardItems: handleGetBoardItems,
+        getBoardTasks: handleGetBoardTasks,
+        setBoardTasks: handleSetBoardTasks,
         getSelectedBoard: handleGetSelectedBoard,
         onBoardChanged: handleBoardChange,
     };

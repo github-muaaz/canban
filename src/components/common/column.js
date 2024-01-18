@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import Icon from "./element/icon/icon";
-import Task from "./task";
+import Task from "./task/task";
 import Span from "./element/text/span";
+import {Droppable} from "react-beautiful-dnd";
 
 const ColumnStyled = styled.div`
   width: 280px;
@@ -20,10 +21,16 @@ const ListStyled = styled.div`
   }
 `
 
-const Column = ({column}) => {
+const Column = ({column, index}) => {
 
     return (
-        <ColumnStyled className={'flex--column g--25'}>
+        <Droppable droppableId={column.id} index={index}>
+            {(provided, snapshot) => (
+        <ColumnStyled
+            className={'flex--column g--25'}
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+        >
             <div className={'flex--row align--itm--center g--12'} style={{color: column.color}}>
                 <Icon icon={'circle'}/>
 
@@ -32,11 +39,14 @@ const Column = ({column}) => {
 
 
             <ListStyled shadow={column.tasks.length} className={'flex--column g--25'}>
-                {column.tasks.map(task =>
-                    <Task task={task} key={task.id}/>
+                {column.tasks.map((task, index) =>
+                    <Task task={task} key={task.id} index={index}/>
                 )}
             </ListStyled>
+            {provided.placeholder}
         </ColumnStyled>
+            )}
+        </Droppable>
     )
 }
 

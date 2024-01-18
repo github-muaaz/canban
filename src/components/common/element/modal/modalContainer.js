@@ -1,7 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import {ModalProvider} from "../../../../context/modalContext";
-import {checkSubtask, setStatus} from "../../../../utils/fake";
 
 const ContainerStyled = styled.div`
   background: rgba(0, 0, 0, 0.5);
@@ -13,68 +12,66 @@ const ContainerStyled = styled.div`
   z-index: 850;
 `
 
+const ModalStyled = styled.div`
+  border-radius: 6px;
+  background: var(--white, #FFF);
+  z-index: 900;
+  padding: 32px;
+  width: 32%;
+  gap: 20px;
+`
+
 const ModalContainer = ({children}) => {
 
-    const [isOpen, setIsOpen] = useState(false);
-    const [modalItem, setModalItem] = useState();
     const [modal, setModal] = useState();
+    const [modalItem, setModalItem] = useState();
 
-    useEffect(() => {
-        console.log('modal item changed', modalItem)
-    }, [modalItem])
+    const handleSetModal = (data) => {
+        // console.log('modal changed', data)
+        setModal(data);
+    }
 
-    const handleOpen = (modal, modalItem) => {
-        setIsOpen(true);
-        setModal(modal);
-        if(modalItem)
-            setModalItem(modalItem);
-    };
+    const handleGetModal = () => {
+        return modal;
+    }
 
-    const handleSetModalItem = item => {
-        setModalItem(item);
+    const handleSetModalItem = (data) => {
+        setModalItem(data);
     }
 
     const handleGetModalItem = () => {
         return modalItem;
     }
 
-    const handleClose = () => setIsOpen(false);
-
-    const handleChecked = id => {
-        const newTask = checkSubtask(modalItem.id, id);
-
-        setModalItem( prev => ({...prev, ...newTask}));
-    }
-
-    const handleSelectChange = id => {
-        const newTask = setStatus(modalItem.id, id);
-        console.log(newTask)
-
-        setModalItem(prev => ({...prev, ...newTask}));
-    }
-
     const context = {
-        openModal: handleOpen,
-        closeModal: handleClose,
-        onChecked: handleChecked,
-        getModalItem: handleGetModalItem,
+        setModal: handleSetModal,
+        getModal: handleGetModal,
         setModalItem: handleSetModalItem,
-        onSelectChange: handleSelectChange,
-    };
+        getModalItem: handleGetModalItem,
+    }
+
+    const handleOutsideClick = e => {
+        if(e.target !== e.currentTarget)
+            return;
+
+        setModal(null);
+    }
 
     return (
         <ModalProvider value={context}>
-            {isOpen ?
-                <React.Fragment>
-                    <ContainerStyled id={'modal--container'}>
+            {modal &&
+                <ContainerStyled onClick={handleOutsideClick}>
+                    <ModalStyled className={'center--v--g flex--column'}>
                         {modal}
-                    </ContainerStyled>
+                    </ModalStyled>
+                </ContainerStyled>
+            }
 
-                    {children}
-                </React.Fragment>
-                : children}
+            {
+                children
+            }
         </ModalProvider>
-    );
+    )
 }
 
 export default ModalContainer;

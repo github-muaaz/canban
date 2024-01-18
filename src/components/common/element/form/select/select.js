@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, {useContext, useEffect} from "react";
+import React, {useContext} from "react";
 import DropdownSvg from "../../../../../assets/icons/drop-down.svg";
 import FormContext from "../../../../../context/formContext";
 import Label from "../label";
@@ -17,17 +17,17 @@ const SelectStyled = styled.select`
   font-weight: 500;
   line-height: 23px;
   outline: none;
-  
+
   ::-ms-expand {
     display: none;
   }
 `
 
-const Select = ({name, label, options: old, ...rest}) => {
+const Select = ({name, label, options: old, onChange, ...rest}) => {
 
     const formContext = useContext(FormContext);
 
-    const options = old.sort((a, b) => a.order - b.order);
+    const options = old?.sort((a, b) => a.order - b.order);
 
     const handleChange = (e) => {
         const data = {
@@ -36,14 +36,6 @@ const Select = ({name, label, options: old, ...rest}) => {
 
         formContext.setData(data);
     }
-
-    // useEffect(() => {
-    //     const data = {
-    //         [name]: options.find(e => e)
-    //     }
-    //
-    //     formContext.setData(data);
-    // }, []);
 
     return(
         <div className={'flex--column g--8'}>
@@ -54,7 +46,7 @@ const Select = ({name, label, options: old, ...rest}) => {
             <SelectStyled
                 name={name}
                 icon={DropdownSvg}
-                onChange={handleChange}
+                onChange={onChange || handleChange}
                 {...rest}
             >
                 {options.map(option =>

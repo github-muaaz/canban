@@ -27,7 +27,7 @@ const IconContainerStyled = styled.div`
   cursor: pointer;
 `
 
-const SubtaskBox = ({subtasks}) => {
+const SubtaskBox = ({subtasks = []}) => {
 
     return (
         <BoxStyled className={'flex--column'}>

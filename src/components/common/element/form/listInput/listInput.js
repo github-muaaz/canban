@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react";
+import React, {useContext} from "react";
 import styled from "styled-components";
 import Span from "../../text/span";
 import Input from "../input";
@@ -27,11 +27,13 @@ const ListInput = ({name, label, ...rest}) => {
     )
 }
 
-const ListBody = ({name, btnLabel, placeholder}) => {
+const ListBody = ({name, btnLabel, placeholder, defaultValue}) => {
 
     const formContext = useContext(FormContext);
 
     const formData = formContext.getData();
+
+    const items = defaultValue ||  (formData ? formData[name] : null);
 
     const getTemplate = () => ({
         id: uuid(),
@@ -40,13 +42,13 @@ const ListBody = ({name, btnLabel, placeholder}) => {
     });
 
     const handleAdd = () => {
-        const data = {...formData};
+        const data = formContext.getData();
 
-        const items = formData[name];
+        const items = data[name] || [];
 
         data[name] = [...items, getTemplate()];
 
-       formContext.setData({...data});
+        formContext.setData({...data});
     }
 
     const handleRemove = id => {
@@ -77,7 +79,7 @@ const ListBody = ({name, btnLabel, placeholder}) => {
     return (
         <div className={'flex--column g--12'}>
             {
-                formData[name]?.map(item => {
+                items && items?.map(item => {
                     return (
                         <ContainerStyled key={item.id}>
 

@@ -14,6 +14,10 @@ export const getTask = (id) => {
     return tasks.find(t => t.id === id);
 }
 
+export const getTasks = (boardId) => {
+    return tasks
+}
+
 export const getStatus = (id) => {
     return statuses.find(s => s.id === id);
 }
@@ -52,10 +56,25 @@ export const saveTask = task => {
 
     return {
         status: 200,
-        data: tasks
+        data: boardItems,
     }
 }
 
+export const changeTaskStatus = (taskId, statusId) => {
+    const task= getTask(taskId);
+
+    task.status = getStatus(statusId);
+
+    // return boardItems.map(b => {
+    //     b.columns = b.columns.map(c => {
+    //         return c;
+    //     });
+    //
+    //     return b;
+    // })
+
+    return boardItems;
+}
 
 
 
@@ -227,6 +246,7 @@ const tasks = [
 const columns = [
     [
         {
+            id: '6837f484-fffd-47ea-8108-8797641d7d91',
             title: 'TODO',
             color: "#49C4E5",
             tasks: [
@@ -236,6 +256,7 @@ const columns = [
             ],
         },
         {
+            id: '6837f484-fffd-47ea-8108-8797641d7d92',
             title: 'DOING',
             color: '#8471F2',
             tasks: [
@@ -244,6 +265,7 @@ const columns = [
             ],
         },
         {
+            id: '6837f484-fffd-47ea-8108-8797641d7d93',
             title: 'DONE',
             color: "#67E2AE",
             tasks: [
@@ -253,6 +275,7 @@ const columns = [
     ],
     [
         {
+            id: '6837f484-fffd-47ea-8108-8797641d7d91',
             title: 'TODO',
             color: "#49C4E5",
             tasks: [
@@ -260,6 +283,7 @@ const columns = [
             ],
         },
         {
+            id: '6837f484-fffd-47ea-8108-8797641d7d92',
             title: 'DOING',
             color: '#8471F2',
             tasks: [
@@ -270,6 +294,7 @@ const columns = [
             ],
         },
         {
+            id: '6837f484-fffd-47ea-8108-8797641d7d93',
             title: 'DONE',
             color: "#67E2AE",
             tasks: [
@@ -279,11 +304,13 @@ const columns = [
     ],
     [
         {
+            id: '6837f484-fffd-47ea-8108-8797641d7d91',
             title: 'TODO',
             color: "#49C4E5",
             tasks: [],
         },
         {
+            id: '6837f484-fffd-47ea-8108-8797641d7d92',
             title: 'DOING',
             color: '#8471F2',
             tasks: [
@@ -292,6 +319,7 @@ const columns = [
             ],
         },
         {
+            id: '6837f484-fffd-47ea-8108-8797641d7d93',
             title: 'DONE',
             color: "#67E2AE",
             tasks: [
@@ -314,6 +342,9 @@ const boardItems = [
     {
         id: "3", title: "Roadmap", columns: columns[2],
     },
+    {
+        id: "4", title: "Roadmap 2", columns: [],
+    },
 ]
 
 const boards = [
@@ -325,5 +356,8 @@ const boards = [
     },
     {
         id: "3", title: "Roadmap",
+    },
+    {
+        id: "4", title: "Roadmap 2",
     },
 ]
