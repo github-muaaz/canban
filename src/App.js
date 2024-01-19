@@ -5,7 +5,7 @@ import styled from "styled-components";
 import {BoardProvider} from "./context/boardContext";
 import Main from "./components/main";
 import ModalContainer from "./components/common/element/modal/modalContainer";
-import {getBoard} from "./utils/fake";
+import {getBoardTasks} from "./utils/fake2";
 
 const BoxStyled = styled.div`
   height: 100vh;
@@ -19,7 +19,7 @@ function App() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [headerHeight, setHeaderHeight] = useState(0);
     const [selectedBoard, setSelectedBoard] = useState();
-    const [boardTasks, setBoardTasks] = useState();
+    const [boardColumns, setBoardColumns] = useState([]);
 
 
     const setHeights = () => {
@@ -44,30 +44,46 @@ function App() {
 
     const handleBoardChange = board => setSelectedBoard(board);
     const handleGetSelectedBoard = () => selectedBoard;
-    const handleGetBoardTasks = () => boardTasks;
-    const handleSetBoardTasks = (tasks) => setBoardTasks(tasks);
+    const handleGetBoardColumns = () => boardColumns;
+    const handleSetBoardColumns = (columns) => setBoardColumns(columns);
+    const handleUpdateBoard = (task, oldColumnId) => {
+
+        const tempBoardColumns = [...boardColumns]
+
+        const oldColumn = tempBoardColumns.find(bc => bc.id === oldColumnId);
+
+        oldColumn.tasks = oldColumn.tasks.filter(t => t.id !== task.id);
+
+        const newColumn = tempBoardColumns.find(bc => bc.id === task.statusId);
+
+        newColumn.tasks = [...newColumn.tasks, task];
+
+        setBoardColumns(tempBoardColumns);
+    }
+
 
     useEffect(() => {
         console.log('selected board changed', selectedBoard);
 
         // backend call
-        const res = getBoard(selectedBoard?.id);
+        const data = getBoardTasks(selectedBoard?.id);
 
-        setBoardTasks(res);
+        setBoardColumns(data);
     }, [selectedBoard])
 
 
     const boardContext = {
-        getBoardTasks: handleGetBoardTasks,
-        setBoardTasks: handleSetBoardTasks,
+        getBoardColumns: handleGetBoardColumns,
+        setBoardColumns: handleSetBoardColumns,
         getSelectedBoard: handleGetSelectedBoard,
         onBoardChanged: handleBoardChange,
+        updateBoard: handleUpdateBoard,
     };
 
     return (
         <BoxStyled ref={boxRef}>
-            <ModalContainer>
-                <BoardProvider value={boardContext}>
+            <BoardProvider value={boardContext}>
+                <ModalContainer>
                     <Header isSidebarOpen={isSidebarOpen} myRef={navRef}/>
 
                     <Main
@@ -75,9 +91,8 @@ function App() {
                         setIsSidebarOpen={setIsSidebarOpen}
                         headerHeight={headerHeight}
                     />
-                </BoardProvider>
-
-            </ModalContainer>
+                </ModalContainer>
+            </BoardProvider>
             <GlobalStyle/>
         </BoxStyled>);
 }

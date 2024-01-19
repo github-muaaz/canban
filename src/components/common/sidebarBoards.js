@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import styled from "styled-components";
 import Ul from "./element/lists/ul";
-import {getBoards} from "../../utils/fake";
+import {getBoards} from "../../utils/fake2";
 import BoardContext from "../../context/boardContext";
 import Text from "./element/text";
 

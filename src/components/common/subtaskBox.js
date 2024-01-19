@@ -4,7 +4,8 @@ import Icon from "./element/icon/icon";
 import Text from "./element/text";
 import {useContext} from "react";
 import ModalContext from "../../context/modalContext";
-import {getCompletedCount} from "../../utils/utils";
+import {setSubtaskStatus} from "../../utils/fake2";
+import BoardContext from "../../context/boardContext";
 
 const BoxStyled = styled.div`
   gap: 16px;
@@ -27,35 +28,66 @@ const IconContainerStyled = styled.div`
   cursor: pointer;
 `
 
-const SubtaskBox = ({subtasks = []}) => {
+const SubtaskBox = ({task}) => {
+
+    if (task.subtasks?.length <= 0)
+        return;
+
+    console.log('task', task)
 
     return (
         <BoxStyled className={'flex--column'}>
-            <Span content={`Subtasks ${getCompletedCount(subtasks)} of ${subtasks.length}`}/>
+            <Span content={`Subtasks ${(task.completedSubtasks)} of ${task.subtasks?.length}`}/>
 
             <div className={'flex--column g--8'}>
-                {subtasks.map(task => <SubtaskRow key={task.id} task={task}/>)}
+                {task.subtasks?.map(subtask => <SubtaskRow key={subtask.id} subtask={subtask} task={task}/>)}
             </div>
         </BoxStyled>
     )
 }
 
-const SubtaskRow = ({task}) => {
+const SubtaskRow = ({subtask, task}) => {
 
     const modalContext = useContext(ModalContext);
+    const boardContext = useContext(BoardContext);
 
-    const handleChecked = () => modalContext.onChecked(task.id);
+    const handleChecked = () => {
+        // backend call
+        setSubtaskStatus(subtask.id, subtask.isCompleted);
+
+        const boardColumns = [...boardContext.getBoardColumns()];
+
+        console.log(boardColumns)
+
+        const tempTask = boardColumns
+            .find(bc => bc.id === task.statusId)
+            .tasks
+            .find(t => t.id === task.id);
+
+        if(subtask.isCompleted){
+            subtask.isCompleted = false;
+            tempTask.completedSubtasks = tempTask.completedSubtasks - 1;
+        }
+        else{
+            subtask.isCompleted = true;
+            tempTask.completedSubtasks = tempTask.completedSubtasks + 1;
+        }
+
+        boardContext.setBoardColumns(boardColumns);
+
+        modalContext.setModalItem({...task, ...tempTask});
+    }
 
     return (
         <CardStyled className={'flex--row g--16 align--itm--center'}>
             <IconContainerStyled
                 onClick={handleChecked}
-                checked={task.isCompleted}
+                checked={subtask.isCompleted}
             >
                 <Icon w={'11px'} h={'11px'} icon={'checked'}/>
             </IconContainerStyled>
 
-            <Text fs={'12px'} content={task.title}/>
+            <Text fs={'12px'} content={subtask.title}/>
         </CardStyled>
     )
 }

@@ -1,11 +1,11 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext} from "react";
 import styled from "styled-components";
-import {getBoard, getStatus} from "../../utils/fake";
 import EmptyBoards from "./emptyBoards";
 import Column from "./column";
 import Button from "./element/button";
 import BoardContext from "../../context/boardContext";
 import {DragDropContext} from "react-beautiful-dnd";
+import {setTaskStatus} from "../../utils/fake2";
 
 const ContainerStyled = styled.div`
   background: var(--light-grey-light-bg, #F4F7FD);
@@ -23,37 +23,35 @@ const Board = () => {
 
     const boardContext = useContext(BoardContext);
 
-    const board = boardContext.getBoardTasks();
+    const boardColumns = boardContext.getBoardColumns();
 
-    const isEmpty = board?.columns?.filter(c => c.tasks?.length > 0).length <= 0;
+    const isEmpty = boardColumns?.filter(c => c.tasks?.length > 0).length <= 0;
     
     const onDrag = (result) => {
         if (!result.destination) return;
 
-        const {source, destination} = result;
-
-        const {columns} = board;
+        const {source, destination, draggableId} = result;
 
         if (source.droppableId !== destination.droppableId) {
-            const sourceColIndex = columns.findIndex(c => c.id === source.droppableId);
-            const destinationColIndex = columns.findIndex(c => c.id === destination.droppableId);
+            const sourceColIndex = boardColumns.findIndex(c => c.id === source.droppableId);
+            const destinationColIndex = boardColumns.findIndex(c => c.id === destination.droppableId);
 
-            const sourceCol = columns[sourceColIndex];
-            const destinationCol = columns[destinationColIndex];
+            setTaskStatus(draggableId, destination.droppableId);
+
+            const sourceCol = boardColumns[sourceColIndex];
+            const destinationCol = boardColumns[destinationColIndex];
 
             const sourceTask = [...sourceCol.tasks];
             const destinationTask = [...destinationCol.tasks];
 
             const [removed] = sourceTask.splice(source.index, 1);
 
-            removed.status = getStatus(destinationCol.id);
-
             destinationTask.splice(destination.index, 0, removed);
 
-            columns[sourceColIndex].tasks = sourceTask;
-            columns[destinationColIndex].tasks = destinationTask;
+            boardColumns[sourceColIndex].tasks = sourceTask;
+            boardColumns[destinationColIndex].tasks = destinationTask;
 
-            boardContext.setBoardTasks(board)
+            boardContext.setBoardColumns(boardColumns)
         }
     }
 
@@ -62,8 +60,8 @@ const Board = () => {
             {isEmpty ? <EmptyBoards/> :
                 <BoxStyled className={'p--25 h--100 g--25'}>
                     <DragDropContext onDragEnd={onDrag}>
-                        {board?.columns?.map((column, index) =>
-                            <Column column={column} key={column.title} index={index}/>
+                        {boardColumns?.map((column, index) =>
+                            <Column column={column} key={column.name} index={index}/>
                         )}
 
                         <Button

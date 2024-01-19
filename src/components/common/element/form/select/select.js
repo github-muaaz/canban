@@ -23,7 +23,7 @@ const SelectStyled = styled.select`
   }
 `
 
-const Select = ({name, label, options: old, onChange, ...rest}) => {
+const Select = ({name, label, options: old, onChange, defaultValue, ...rest}) => {
 
     const formContext = useContext(FormContext);
 
@@ -48,9 +48,14 @@ const Select = ({name, label, options: old, onChange, ...rest}) => {
                 icon={DropdownSvg}
                 onChange={onChange || handleChange}
                 {...rest}
+                value={defaultValue}
             >
                 {options.map(option =>
-                    <option value={option.id} key={option.id}>
+                    <option
+                        value={option.id}
+                        key={option.id}
+                        // selected={defaultValue === option.id}
+                    >
                         {option.name}
                     </option>
                 )}

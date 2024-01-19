@@ -34,7 +34,7 @@ const Column = ({column, index}) => {
             <div className={'flex--row align--itm--center g--12'} style={{color: column.color}}>
                 <Icon icon={'circle'}/>
 
-                <Span content={`${column.title} (${column.tasks.length})`} lSpace={'2.4px'}/>
+                <Span content={`${column.name.toUpperCase()} (${column.tasks.length})`} lSpace={'2.4px'}/>
             </div>
 
 

@@ -3,15 +3,14 @@ import React, {useContext, useEffect, useState} from "react";
 import ModalContext from "../../../context/modalContext";
 import Text from "../element/text";
 import Span from "../element/text/span";
-import {getCompletedCount} from "../../../utils/utils";
 import Icon from "../element/icon/icon-img";
 import MenuSvg from "../../../assets/icons/menu-dots.svg";
 import SubtaskBox from "../subtaskBox";
 import Select from "../element/form/select";
-import {changeTaskStatus, getStatuses, getTask} from "../../../utils/fake";
 import TaskForm from "./taskForm";
 import BoardContext from "../../../context/boardContext";
 import {Draggable} from "react-beautiful-dnd";
+import {getBoardStatuses, getTask, setTaskStatus} from "../../../utils/fake2";
 
 const TaskStyled = styled.div`
   padding: 23px 16px;
@@ -25,10 +24,6 @@ const TaskStyled = styled.div`
 const Task = ({task, index}) => {
 
     const modalContext = useContext(ModalContext);
-
-    const {subtasks} = task;
-
-    const completedCount = getCompletedCount(subtasks);
 
     const openModal = () => {
         modalContext.setModalItem(task);
@@ -47,7 +42,11 @@ const Task = ({task, index}) => {
                 >
                     <Text content={task.title} fs={'15px'}/>
 
-                    <Span content={`${completedCount} of ${subtasks.length} subtasks`}/>
+                    {
+                        task.subtasksLenght <= 0
+                            ? <Span content={`No subtasks`}/>
+                            : <Span content={`${task.completedSubtasks} of ${task.subtasksLenght} subtasks`}/>
+                    }
                 </TaskStyled>
             )}
         </Draggable>
@@ -64,7 +63,7 @@ const ModalBody = () => {
     const modalContext = useContext(ModalContext);
     const boardContext = useContext(BoardContext);
 
-    console.log('modal context 2', modalContext)
+    // console.log('modal context 2', modalContext.getModalItem())
 
     const [task, setTask] = useState({});
 
@@ -72,11 +71,11 @@ const ModalBody = () => {
 
     useEffect(() => {
         // backend call
-        const statuses = getStatuses();
         const task = getTask(modalContext.getModalItem().id);
+        const statuses = getBoardStatuses(task?.boardId);
 
-        setStatuses(statuses);
         setTask(task);
+        setStatuses(statuses);
     }, []);
 
     const handleEdit = () => modalContext.setModal(<TaskForm title={'Edit Task'} defaultValues={task}/>);
@@ -84,16 +83,17 @@ const ModalBody = () => {
     const handleStatusChange = e => {
         const statusId = e.target.value;
 
-        const selectedItem = boardContext.getSelectedBoard();
+        const oldStatusId = task.statusId;
 
-        // call backend
-        const boardItems = changeTaskStatus(task.id, statusId);
+        const newTask = {...task};
+        newTask.statusId = statusId;
 
-        boardContext.setBoardItems(boardItems);
+        setTask(newTask);
 
-        // boardContext?.setSelectedBoard(selectedItem);
+        // backend call
+        setTaskStatus(task.id, statusId);
 
-        modalContext.setModalItem(task);
+        boardContext.updateBoard(newTask, oldStatusId);
     }
 
     return (
@@ -110,12 +110,12 @@ const ModalBody = () => {
                 className={'medium--grey font--weight--5 l--height--23'}
             />
 
-            <SubtaskBox subtasks={task.subtasks}/>
+            <SubtaskBox task={task}/>
 
             <Select
                 label={'Current Status'}
                 onChange={handleStatusChange}
-                defaultValue={task.status?.id}
+                defaultValue={task.statusId}
                 options={statuses}
             />
         </React.Fragment>

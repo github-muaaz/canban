@@ -1,27 +1,4 @@
 
-export const getColors = () => {
-    return colors;
-}
-export const getBoard = id => {
-    return boardItems.find(b => b.id === id);
-}
-
-export const getBoards = () => {
-    return boards;
-}
-
-export const getTask = (id) => {
-    return tasks.find(t => t.id === id);
-}
-
-export const getTasks = (boardId) => {
-    return tasks
-}
-
-export const getStatus = (id) => {
-    return statuses.find(s => s.id === id);
-}
-
 export const getStatuses = () => {
     return statuses;
 }
@@ -31,25 +8,6 @@ export const getStatuses = () => {
 
 
 
-export const checkSubtask = (taskId, subtaskId) => {
-    subtasks.forEach(s => {
-        if (s.id === subtaskId)
-            s.isCompleted = !s.isCompleted;
-    })
-
-    return getTask(taskId);
-}
-
-export const setStatus = (taskId, statusId) =>{
-    tasks.forEach(t => {
-        if (t.id === taskId) {
-            console.log('ok', statusId)
-            t.status = getStatus(statusId);
-        }
-    })
-
-    return getTask(taskId);
-}
 
 export const saveTask = task => {
     tasks.push(task);
@@ -60,29 +18,10 @@ export const saveTask = task => {
     }
 }
 
-export const changeTaskStatus = (taskId, statusId) => {
-    const task= getTask(taskId);
-
-    task.status = getStatus(statusId);
-
-    // return boardItems.map(b => {
-    //     b.columns = b.columns.map(c => {
-    //         return c;
-    //     });
-    //
-    //     return b;
-    // })
-
-    return boardItems;
-}
 
 
 
-const colors = [
-    "#67E2AE",
-    "#8471F2",
-    "#49C4E5"
-]
+
 
 const subtasks = [
     {
