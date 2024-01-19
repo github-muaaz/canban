@@ -2,10 +2,10 @@ import React, {useContext} from "react";
 import styled from "styled-components";
 import EmptyBoards from "./emptyBoards";
 import Column from "./column";
-import Button from "./element/button";
-import BoardContext from "../../context/boardContext";
+import Button from "../element/button";
+import BoardContext from "../../../context/boardContext";
 import {DragDropContext} from "react-beautiful-dnd";
-import {setTaskStatus} from "../../utils/fake2";
+import {setTaskStatus} from "../../../utils/fake";
 
 const ContainerStyled = styled.div`
   background: var(--light-grey-light-bg, #F4F7FD);

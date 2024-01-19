@@ -1,4 +1,6 @@
-const subtasks = [
+import {v4 as uuid} from "uuid";
+
+let dbSubtasks = [
     {
         id: '6837f484-fffd-47ea-8108-8797641d7d91',
         title: 'Research competitor pricing and business models',
@@ -85,7 +87,13 @@ const subtasks = [
     },
 ]
 
-const columns = [
+const dbColumns = [
+    {
+        id: '6837f484-fffd-47ea-8108-8797641d7d93',
+        name: 'done',
+        color: '#67E2AE',
+        order: 300,
+    },
     {
         id: '6837f484-fffd-47ea-8108-8797641d7d91',
         name: 'todo',
@@ -98,15 +106,9 @@ const columns = [
         color: '#8471F2',
         order: 200,
     },
-    {
-        id: '6837f484-fffd-47ea-8108-8797641d7d93',
-        name: 'done',
-        color: '#67E2AE',
-        order: 300,
-    },
 ]
 
-const tasks = [
+let dbTasks = [
     {
         id: '6837f484-fffd-47ea-8108-8797641d7d91',
         statusId: '6837f484-fffd-47ea-8108-8797641d7d91',
@@ -180,7 +182,7 @@ const tasks = [
 
 ]
 
-const boards = [
+const dbBoards = [
     {
         id: "1", title: "Platform Launch",
     },
@@ -195,7 +197,7 @@ const boards = [
     },
 ]
 
-const boardColumn = [
+const dbBoardColumn = [
     {
         boardId: '1',
         columnId: '6837f484-fffd-47ea-8108-8797641d7d91',
@@ -226,7 +228,7 @@ const boardColumn = [
     },
 ]
 
-const colors = [
+const dbColors = [
     "#67E2AE",
     "#8471F2",
     "#49C4E5"
@@ -234,21 +236,21 @@ const colors = [
 
 
 export const getBoards = () => {
-    console.log('backend call: getBoards', boards)
-    return boards;
+    console.log('backend call: getBoards', dbBoards)
+    return dbBoards;
 }
 
 export const getBoardTasks = id => {
-    const data = boardColumn
+    const data = dbBoardColumn
         .filter(bc => bc.boardId === id)
-        .map(bc => columns.find(c => c.id === bc.columnId))
+        .map(bc => dbColumns.find(c => c.id === bc.columnId))
         .map(c => {
             const column = {...c}
-            column.tasks = tasks
+            column.tasks = dbTasks
                 .filter(t => t.statusId === c.id && t.boardId === id)
                 .map(t => {
                     const task = {...t}
-                    const taskSubtasks = subtasks.filter(sb => sb.taskId === t.id);
+                    const taskSubtasks = dbSubtasks.filter(sb => sb.taskId === t.id);
                     task.subtasksLenght = taskSubtasks.length;
                     task.completedSubtasks = taskSubtasks.filter(sb => sb.isCompleted).length;
                     return task;
@@ -261,8 +263,8 @@ export const getBoardTasks = id => {
 }
 
 export const getTask = (id) => {
-    const task = tasks.find(t => t.id === id);
-    const subtask = subtasks.filter(sb => sb.taskId === task.id);
+    const task = dbTasks.find(t => t.id === id);
+    const subtask = dbSubtasks.filter(sb => sb.taskId === task.id);
 
     task.subtasks = subtask;
     task.completedSubtasks = subtask.filter(sb => sb.isCompleted).length;
@@ -274,9 +276,9 @@ export const getTask = (id) => {
 export const getBoardStatuses = (boardId) => {
     console.log('backend call input', boardId)
 
-    const bc = boardColumn.filter(bc => bc.boardId === boardId);
+    const bc = dbBoardColumn.filter(bc => bc.boardId === boardId);
 
-    const data = columns.filter(c => bc.find(bc => bc.columnId === c.id));
+    const data = dbColumns.filter(c => bc.find(bc => bc.columnId === c.id));
 
     console.log('backend call: getBoardStatuses', data)
     return data;
@@ -285,7 +287,7 @@ export const getBoardStatuses = (boardId) => {
 export const setTaskStatus = (taskId, statusId) => {
     console.log('backend call: setTaskStatus', taskId, statusId)
 
-    tasks.forEach(t => {
+    dbTasks.forEach(t => {
         if(t.id === taskId)
             t.statusId = statusId;
     })
@@ -294,8 +296,71 @@ export const setTaskStatus = (taskId, statusId) => {
 export const setSubtaskStatus = (id, isCompleted) => {
     console.log('backend call: setSubtaskStatus', id, isCompleted)
 
-    subtasks.forEach(s => {
+    dbSubtasks.forEach(s => {
         if(s.id === id)
             s.isCompleted = isCompleted;
     })
 }
+
+export const saveTask = task => {
+    console.log('backend call input: ', {...task});
+
+    // on adding new task
+    if(!task.id){
+        task.id = uuid();
+
+        if(!task.statusId)
+            task.statusId = getBoardInitialStatus(task.boardId);
+
+        const subtasks = [...task.subtasks]
+
+        subtasks.forEach(st => {
+            const subtask = {
+                id: st.id,
+                title: st.title,
+                taskId: task.id,
+                isCompleted: false,
+            }
+            dbSubtasks.push(subtask)
+        })
+
+        delete task.subtasks;
+
+        dbTasks.push(task)
+    }
+
+    // on editing task
+    else {
+        const old = dbTasks.find(t => t.id === task.id);
+
+        old.title = task.title;
+        old.statusId = task.statusId;
+        old.description = task.description;
+
+        const newDbTasks = dbTasks.filter(t => t.id !== task.id);
+
+        dbTasks = [...newDbTasks, old];
+
+        const newSubtasks = dbSubtasks.filter(st => st.taskId !== task.id);
+        dbSubtasks = [...newSubtasks];
+
+        const subtasks = task.subtasks;
+
+        subtasks.forEach(st => {
+            st.taskId = task.id;
+            st.isCompleted = st.isCompleted || false;
+
+            dbSubtasks.push(st);
+        })
+    }
+}
+
+const getBoardInitialStatus = (boardId) => {
+    const bc = dbBoardColumn.filter(bc => bc.boardId === boardId);
+
+    return dbColumns.filter(c => bc.find(bc => bc.columnId === c.id))
+        .sort((c1, c2) => c1.order - c2.order)
+        .find(c => c)
+        ?.id;
+}
+

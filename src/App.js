@@ -5,7 +5,7 @@ import styled from "styled-components";
 import {BoardProvider} from "./context/boardContext";
 import Main from "./components/main";
 import ModalContainer from "./components/common/element/modal/modalContainer";
-import {getBoardTasks} from "./utils/fake2";
+import {getBoardTasks} from "./utils/fake";
 
 const BoxStyled = styled.div`
   height: 100vh;
@@ -47,7 +47,6 @@ function App() {
     const handleGetBoardColumns = () => boardColumns;
     const handleSetBoardColumns = (columns) => setBoardColumns(columns);
     const handleUpdateBoard = (task, oldColumnId) => {
-
         const tempBoardColumns = [...boardColumns]
 
         const oldColumn = tempBoardColumns.find(bc => bc.id === oldColumnId);
@@ -61,14 +60,17 @@ function App() {
         setBoardColumns(tempBoardColumns);
     }
 
-
-    useEffect(() => {
-        console.log('selected board changed', selectedBoard);
-
+    const handleUpdateBoardData = () => {
         // backend call
         const data = getBoardTasks(selectedBoard?.id);
 
         setBoardColumns(data);
+    }
+
+    useEffect(() => {
+        console.log('selected board changed', selectedBoard);
+
+        handleUpdateBoardData();
     }, [selectedBoard])
 
 
@@ -78,6 +80,7 @@ function App() {
         getSelectedBoard: handleGetSelectedBoard,
         onBoardChanged: handleBoardChange,
         updateBoard: handleUpdateBoard,
+        updateBoardData: handleUpdateBoardData,
     };
 
     return (

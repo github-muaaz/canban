@@ -1,38 +1,22 @@
-import {useContext} from "react";
+import {useState} from "react";
 import {FormProvider} from "../../../../context/formContext";
-import ModalContext from "../../../../context/modalContext";
 
-const Form = ({children, ...rest}) => {
+const Form = ({children, onSubmit, ...rest}) => {
 
-    const modalContext = useContext(ModalContext);
+    const [data, setData] = useState();
 
     const handleSetData = (newData) => {
-        const old = modalContext.getModalItem();
-
-        modalContext.setModalItem({...old, ...newData});
+        setData(prev => ({...prev, ...newData}));
     }
 
     const handleGetData = () => {
-        return modalContext.getModalItem();
+        return data;
     }
 
     const handleSubmit = e => {
         e.preventDefault();
 
-        const data = modalContext.getModalItem();
-
-        console.log('submit', data)
-
-        // call backend to save data
-        // const res = saveTask(data);
-
-        // if (res.status) {
-        //     modalContext.closeModal();
-        // }
-
-
-
-
+        onSubmit(e, data);
     }
 
     const context = {

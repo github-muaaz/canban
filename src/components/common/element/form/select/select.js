@@ -31,7 +31,7 @@ const Select = ({name, label, options: old, onChange, defaultValue, ...rest}) =>
 
     const handleChange = (e) => {
         const data = {
-            [name]: options.find(option => option.id === e.target.value)
+            [name+'Id']: options.find(option => option.id === e.target.value)?.id
         }
 
         formContext.setData(data);
@@ -54,7 +54,6 @@ const Select = ({name, label, options: old, onChange, defaultValue, ...rest}) =>
                     <option
                         value={option.id}
                         key={option.id}
-                        // selected={defaultValue === option.id}
                     >
                         {option.name}
                     </option>

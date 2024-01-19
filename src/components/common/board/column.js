@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import Icon from "./element/icon/icon";
-import Task from "./task/task";
-import Span from "./element/text/span";
+import Icon from "../element/icon/icon";
+import Task from "../task/task";
+import Span from "../element/text/span";
 import {Droppable} from "react-beautiful-dnd";
 
 const ColumnStyled = styled.div`
@@ -25,7 +25,7 @@ const Column = ({column, index}) => {
 
     return (
         <Droppable droppableId={column.id} index={index}>
-            {(provided, snapshot) => (
+            {(provided) => (
         <ColumnStyled
             className={'flex--column g--25'}
             ref={provided.innerRef}

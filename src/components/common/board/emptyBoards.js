@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import Button from "./element/button";
-import Text from "./element/text";
+import Button from "../element/button";
+import Text from "../element/text";
 
 const BoxStyled = styled.div`
   gap: 20px;

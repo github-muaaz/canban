@@ -7,13 +7,36 @@ import Button from "../element/button";
 import Form from "../element/form/form";
 import React, {useContext, useEffect, useState} from "react";
 import FormContext from "../../../context/formContext";
-import {getBoardStatuses} from "../../../utils/fake2";
+import {getBoardStatuses, saveTask} from "../../../utils/fake";
+import ModalContext from "../../../context/modalContext";
+import BoardContext from "../../../context/boardContext";
 
-const TaskForm = (props) => {
+const TaskForm = ({boardId, ...rest}) => {
+
+    const modalContext = useContext(ModalContext);
+    const boardContext = useContext(BoardContext);
+
+    const handleSubmit = (e, formData) => {
+
+        const data = {
+            id: formData.id,
+            boardId: boardId,
+            title: formData.title,
+            statusId: formData.statusId,
+            description: formData.description,
+            subtasks: formData.subtasks?.filter(st => st.title.trim()) || [],
+        }
+
+        // backend call
+        saveTask(data)
+
+        modalContext.setModal(null);
+        boardContext.updateBoardData();
+    }
 
     return (
-        <Form className={'flex--column g--24'}>
-            <FormBody {...props}/>
+        <Form onSubmit={handleSubmit} className={'flex--column g--24'}>
+            <FormBody boardId={boardId} {...rest}/>
         </Form>
     )
 }

@@ -5,12 +5,12 @@ import Text from "../element/text";
 import Span from "../element/text/span";
 import Icon from "../element/icon/icon-img";
 import MenuSvg from "../../../assets/icons/menu-dots.svg";
-import SubtaskBox from "../subtaskBox";
+import SubtaskBox from "./subtaskBox";
 import Select from "../element/form/select";
 import TaskForm from "./taskForm";
 import BoardContext from "../../../context/boardContext";
 import {Draggable} from "react-beautiful-dnd";
-import {getBoardStatuses, getTask, setTaskStatus} from "../../../utils/fake2";
+import {getBoardStatuses, getTask, setTaskStatus} from "../../../utils/fake";
 
 const TaskStyled = styled.div`
   padding: 23px 16px;
@@ -63,9 +63,7 @@ const ModalBody = () => {
     const modalContext = useContext(ModalContext);
     const boardContext = useContext(BoardContext);
 
-    // console.log('modal context 2', modalContext.getModalItem())
-
-    const [task, setTask] = useState({});
+    const task = modalContext.getModalItem();
 
     const [statuses, setStatuses] = useState([]);
 
@@ -74,7 +72,7 @@ const ModalBody = () => {
         const task = getTask(modalContext.getModalItem().id);
         const statuses = getBoardStatuses(task?.boardId);
 
-        setTask(task);
+        modalContext.setModalItem(task);
         setStatuses(statuses);
     }, []);
 
@@ -96,7 +94,7 @@ const ModalBody = () => {
         const newTask = {...task};
         newTask.statusId = statusId;
 
-        setTask(newTask);
+        modalContext.setModalItem(newTask);
 
         // backend call
         setTaskStatus(task.id, statusId);
@@ -118,7 +116,7 @@ const ModalBody = () => {
                 className={'medium--grey font--weight--5 l--height--23'}
             />
 
-            <SubtaskBox task={task} setTask={setTask}/>
+            <SubtaskBox task={task} setTask={modalContext.setModalItem}/>
 
             <Select
                 label={'Current Status'}

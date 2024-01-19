@@ -1,11 +1,10 @@
 import styled from "styled-components";
-import Span from "./element/text/span";
-import Icon from "./element/icon/icon";
-import Text from "./element/text";
+import Span from "../element/text/span";
+import Icon from "../element/icon/icon";
+import Text from "../element/text";
 import {useContext} from "react";
-import ModalContext from "../../context/modalContext";
-import {setSubtaskStatus} from "../../utils/fake2";
-import BoardContext from "../../context/boardContext";
+import {setSubtaskStatus} from "../../../utils/fake";
+import BoardContext from "../../../context/boardContext";
 
 const BoxStyled = styled.div`
   gap: 16px;
@@ -33,7 +32,7 @@ const SubtaskBox = ({task, setTask}) => {
     if (task.subtasks?.length <= 0)
         return;
 
-    console.log('task', task)
+    // console.log('task', task)
 
     return (
         <BoxStyled className={'flex--column'}>
@@ -48,7 +47,6 @@ const SubtaskBox = ({task, setTask}) => {
 
 const SubtaskRow = ({subtask, task, setTask}) => {
 
-    // const modalContext = useContext(ModalContext);
     const boardContext = useContext(BoardContext);
 
     const handleChecked = () => {
@@ -56,8 +54,6 @@ const SubtaskRow = ({subtask, task, setTask}) => {
         setSubtaskStatus(subtask.id, subtask.isCompleted);
 
         const boardColumns = [...boardContext.getBoardColumns()];
-
-        console.log(boardColumns)
 
         const tempTask = boardColumns
             .find(bc => bc.id === task.statusId)
@@ -67,17 +63,17 @@ const SubtaskRow = ({subtask, task, setTask}) => {
         if(subtask.isCompleted){
             subtask.isCompleted = false;
             tempTask.completedSubtasks = tempTask.completedSubtasks - 1;
+            task.completedSubtasks = task.completedSubtasks - 1;
         }
         else{
             subtask.isCompleted = true;
             tempTask.completedSubtasks = tempTask.completedSubtasks + 1;
+            task.completedSubtasks = task.completedSubtasks + 1;
         }
 
+        setTask(task);
+
         boardContext.setBoardColumns(boardColumns);
-
-        setTask({...task, ...tempTask});
-
-        // modalContext.setModalItem({...task, ...tempTask})
     }
 
     return (
