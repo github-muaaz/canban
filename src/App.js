@@ -2,31 +2,26 @@ import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 import Header from "./components/header";
 import GlobalStyle from "./utils/globalStyle";
 import styled from "styled-components";
-import {BoardProvider} from "./context/boardContext";
 import Main from "./components/main";
 import ModalContainer from "./components/common/element/modal/modalContainer";
-import {getBoardTasks} from "./utils/fake";
+import BoardContainer from "./components/common/board/boardContainer";
 
 const BoxStyled = styled.div`
   height: 100vh;
 `
 
 function App() {
-
-    const boxRef = useRef(null);
     const navRef = useRef(null);
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-    const [headerHeight, setHeaderHeight] = useState(0);
-    const [selectedBoard, setSelectedBoard] = useState();
-    const [boardColumns, setBoardColumns] = useState([]);
-
+    const [header, setHeader] = useState(0);
 
     const setHeights = () => {
-        setHeaderHeight(navRef.current.offsetHeight);
+        setHeader(navRef.current);
+        // console.log('navbar h: ', navRef.current.offsetHeight)
     };
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         setHeights();
     }, [])
 
@@ -35,6 +30,8 @@ function App() {
             setHeights();
         }
 
+        navRef.current.addEventListener('resize', handleWindowResize);
+
         window.addEventListener('resize', handleWindowResize);
 
         return () => {
@@ -42,60 +39,19 @@ function App() {
         };
     }, []);
 
-    const handleBoardChange = board => setSelectedBoard(board);
-    const handleGetSelectedBoard = () => selectedBoard;
-    const handleGetBoardColumns = () => boardColumns;
-    const handleSetBoardColumns = (columns) => setBoardColumns(columns);
-    const handleUpdateBoard = (task, oldColumnId) => {
-        const tempBoardColumns = [...boardColumns]
-
-        const oldColumn = tempBoardColumns.find(bc => bc.id === oldColumnId);
-
-        oldColumn.tasks = oldColumn.tasks.filter(t => t.id !== task.id);
-
-        const newColumn = tempBoardColumns.find(bc => bc.id === task.statusId);
-
-        newColumn.tasks = [...newColumn.tasks, task];
-
-        setBoardColumns(tempBoardColumns);
-    }
-
-    const handleUpdateBoardData = () => {
-        // backend call
-        const data = getBoardTasks(selectedBoard?.id);
-
-        setBoardColumns(data);
-    }
-
-    useEffect(() => {
-        console.log('selected board changed', selectedBoard);
-
-        handleUpdateBoardData();
-    }, [selectedBoard])
-
-
-    const boardContext = {
-        getBoardColumns: handleGetBoardColumns,
-        setBoardColumns: handleSetBoardColumns,
-        getSelectedBoard: handleGetSelectedBoard,
-        onBoardChanged: handleBoardChange,
-        updateBoard: handleUpdateBoard,
-        updateBoardData: handleUpdateBoardData,
-    };
-
     return (
-        <BoxStyled ref={boxRef}>
-            <BoardProvider value={boardContext}>
+        <BoxStyled>
+            <BoardContainer>
                 <ModalContainer>
                     <Header isSidebarOpen={isSidebarOpen} myRef={navRef}/>
 
                     <Main
                         isSidebarOpen={isSidebarOpen}
                         setIsSidebarOpen={setIsSidebarOpen}
-                        headerHeight={headerHeight}
+                        header={header}
                     />
                 </ModalContainer>
-            </BoardProvider>
+            </BoardContainer>
             <GlobalStyle/>
         </BoxStyled>);
 }

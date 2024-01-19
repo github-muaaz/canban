@@ -4,15 +4,15 @@ import Sidebar from "./sidebar";
 import Board from "./common/board/board";
 
 const MainStyled = styled.main`
-  height: calc(100vh - ${({height}) => height});
+  height: calc(100vh - ${({height}) => height+'px'});
 `
 
-const Main = ({isSidebarOpen, setIsSidebarOpen, headerHeight}) => {
+const Main = ({isSidebarOpen, setIsSidebarOpen, header}) => {
 
     return(
-        <MainStyled className="flex--row" height={headerHeight+'px'}>
+        <MainStyled className="flex--row" height={header.offsetHeight}>
             <Sidebar
-                headerHeight={headerHeight}
+                header={header}
                 isSidebarOpen={isSidebarOpen}
                 setIsSidebarOpen={setIsSidebarOpen}
             />

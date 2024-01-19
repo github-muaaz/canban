@@ -6,7 +6,7 @@ import BoardContext from "../../context/boardContext";
 import Text from "./element/text";
 
 const BoxStyled = styled.div`
-  height: calc(100vh - ${({cutHeight}) => cutHeight});
+   height: calc(100vh - ${({cutHeight}) => cutHeight + 'px'});
   overflow-y: auto;
   box-shadow: ${({shadow}) => shadow ? `0 -25px 10px -25px rgba(0,0,0,0.45) inset` : ''};
   ::-webkit-scrollbar {
@@ -35,14 +35,14 @@ const SidebarBoards = ({cutHeight}) => {
     return (
         <div style={{padding: '20px 20px 35px 0'}}>
             <Text
-                content={`ALL BOARDS ${boards.length}`}
+                content={`ALL BOARDS (${boards.length})`}
                 className="board--subtitle"
                 fs={'12px'}
                 lSpace={'2.4px'}
                 color={'var(--medium-grey, #828FA3)'}
             />
 
-            <BoxStyled cutHeight={cutHeight+'px - 40px'} shadow={boards.length > 10}>
+            <BoxStyled cutHeight={cutHeight} shadow={boards.length > 10}>
                 <Ul items={boards}/>
             </BoxStyled>
         </div>

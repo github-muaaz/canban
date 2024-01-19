@@ -1,11 +1,12 @@
 import React, {useContext} from "react";
 import styled from "styled-components";
 import EmptyBoards from "./emptyBoards";
-import Column from "./column";
+import Column from "../column";
 import Button from "../element/button";
 import BoardContext from "../../../context/boardContext";
 import {DragDropContext} from "react-beautiful-dnd";
 import {setTaskStatus} from "../../../utils/fake";
+import NoSelectedBoard from "./noSelectedBoard";
 
 const ContainerStyled = styled.div`
   background: var(--light-grey-light-bg, #F4F7FD);
@@ -25,8 +26,10 @@ const Board = () => {
 
     const boardColumns = boardContext.getBoardColumns();
 
-    const isEmpty = boardColumns?.filter(c => c.tasks?.length > 0).length <= 0;
-    
+    const isBoardEmpty = boardColumns?.filter(c => c.tasks?.length > 0).length <= 0;
+
+    const noSelectedBoard = boardContext.getSelectedBoard();
+
     const onDrag = (result) => {
         if (!result.destination) return;
 
@@ -57,24 +60,27 @@ const Board = () => {
 
     return (
         <ContainerStyled className={"board--box w--100"}>
-            {isEmpty ? <EmptyBoards/> :
-                <BoxStyled className={'p--25 h--100 g--25'}>
-                    <DragDropContext onDragEnd={onDrag}>
-                        {boardColumns?.map((column, index) =>
-                            <Column column={column} key={column.name} index={index}/>
-                        )}
+            {!noSelectedBoard
+                ? <NoSelectedBoard/>
+                : (isBoardEmpty)
+                    ? <EmptyBoards/>
+                    : <BoxStyled className={'p--25 h--100 g--25'}>
+                        <DragDropContext onDragEnd={onDrag}>
+                            {boardColumns?.map((column, index) =>
+                                <Column column={column} key={column.name} index={index}/>
+                            )}
 
-                        <Button
-                            className={'medium--grey f--size--24 m--top--40'}
-                            w={'280px'}
-                            borderR={'6px'}
-                            noHover
-                            bg={'var(--lines-light)'}
-                        >
-                            + New Column
-                        </Button>
-                    </DragDropContext>
-                </BoxStyled>
+                            <Button
+                                className={'medium--grey f--size--24 m--top--40'}
+                                w={'280px'}
+                                borderR={'6px'}
+                                noHover
+                                bg={'var(--lines-light)'}
+                            >
+                                + New Column
+                            </Button>
+                        </DragDropContext>
+                    </BoxStyled>
             }
         </ContainerStyled>
     )

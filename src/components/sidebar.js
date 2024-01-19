@@ -42,7 +42,7 @@ const BottomStyled = styled.div`
   padding: 25px;
 `
 
-const Sidebar = ({headerHeight, isSidebarOpen, setIsSidebarOpen}) => {
+const Sidebar = ({header, isSidebarOpen, setIsSidebarOpen}) => {
 
     const btnRef = useRef(null);
 
@@ -66,7 +66,7 @@ const Sidebar = ({headerHeight, isSidebarOpen, setIsSidebarOpen}) => {
         }
     }
 
-    const cutBoardsHeight = headerHeight + btnHeight;
+    const cutBoardsHeight = header.offsetHeight + btnHeight;
 
     return (
         <WrapperStyled>
