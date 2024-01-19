@@ -5,9 +5,9 @@ import ListInput from "../element/form/listInput";
 import Select from "../element/form/select";
 import Button from "../element/button";
 import Form from "../element/form/form";
-import React, {useContext, useEffect} from "react";
-import {getStatuses} from "../../../utils/fake";
+import React, {useContext, useEffect, useState} from "react";
 import FormContext from "../../../context/formContext";
+import {getBoardStatuses} from "../../../utils/fake2";
 
 const TaskForm = (props) => {
 
@@ -18,16 +18,20 @@ const TaskForm = (props) => {
     )
 }
 
-const FormBody = ({defaultValues, title}) => {
+const FormBody = ({defaultValues, title, btnTitle, boardId}) => {
 
-    const statuses = getStatuses();
+    const [statuses, setStatuses] = useState([]);
 
     const formContext = useContext(FormContext);
-
     const task = formContext.getData();
 
     useEffect(() => {
         formContext.setData(defaultValues);
+
+        // backend call
+        const data = getBoardStatuses(boardId);
+
+        setStatuses(data);
     }, []);
 
     return (
@@ -59,13 +63,14 @@ const FormBody = ({defaultValues, title}) => {
             <Select
                 name={'status'}
                 label={'Current Status'}
-                defaultValue={task?.status?.id}
+                defaultValue={task?.statusId}
                 options={statuses}
             />
 
             <Button
-                title={'Create Task'}
+                title={btnTitle || 'Save'}
                 type={'submit'}
+                w={'100%'}
             />
         </React.Fragment>
     )

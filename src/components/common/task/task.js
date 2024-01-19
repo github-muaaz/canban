@@ -78,7 +78,15 @@ const ModalBody = () => {
         setStatuses(statuses);
     }, []);
 
-    const handleEdit = () => modalContext.setModal(<TaskForm title={'Edit Task'} defaultValues={task}/>);
+    const handleEdit = () => modalContext
+        .setModal(
+            <TaskForm
+                title={'Edit Task'}
+                btnTitle={'Save Changes'}
+                defaultValues={task}
+                boardId={boardContext.getSelectedBoard()?.id}
+            />
+        );
 
     const handleStatusChange = e => {
         const statusId = e.target.value;
@@ -110,7 +118,7 @@ const ModalBody = () => {
                 className={'medium--grey font--weight--5 l--height--23'}
             />
 
-            <SubtaskBox task={task}/>
+            <SubtaskBox task={task} setTask={setTask}/>
 
             <Select
                 label={'Current Status'}

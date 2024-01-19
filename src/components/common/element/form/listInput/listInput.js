@@ -38,7 +38,6 @@ const ListBody = ({name, btnLabel, placeholder, defaultValue}) => {
     const getTemplate = () => ({
         id: uuid(),
         title: '',
-        isCompleted: false,
     });
 
     const handleAdd = () => {
@@ -100,7 +99,7 @@ const ListBody = ({name, btnLabel, placeholder, defaultValue}) => {
             <Button
                 type={'button'}
                 bg={'#635FC71A'}
-                width={'100%'}
+                w={'100%'}
                 onClick={handleAdd}
                 padding={'8px 20px'}
                 noHover={'#635FC740'}

@@ -19,7 +19,13 @@ const NightModeBtn = () => {
     }
 
     return (
-        <Button onClick={handleClick} borderR={'6px'} bg={"var(--light-grey-light-bg, #F4F7FD)"} width={'100%'} noHover>
+        <Button
+            onClick={handleClick}
+            borderR={'6px'}
+            bg={"var(--light-grey-light-bg, #F4F7FD)"}
+            w={'100%'}
+            noHover
+        >
             <Icon icon={'sun'}/>
 
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" viewBox="0 0 40 20" fill="#fff">

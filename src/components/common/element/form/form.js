@@ -1,7 +1,6 @@
 import {useContext} from "react";
 import {FormProvider} from "../../../../context/formContext";
 import ModalContext from "../../../../context/modalContext";
-import {saveTask} from "../../../../utils/fake";
 
 const Form = ({children, ...rest}) => {
 
@@ -22,17 +21,18 @@ const Form = ({children, ...rest}) => {
 
         const data = modalContext.getModalItem();
 
+        console.log('submit', data)
+
         // call backend to save data
-        const res = saveTask(data);
+        // const res = saveTask(data);
 
-        if (res.status) {
-            modalContext.closeModal();
-        }
-
-
+        // if (res.status) {
+        //     modalContext.closeModal();
+        // }
 
 
-        console.log('backend call')
+
+
     }
 
     const context = {

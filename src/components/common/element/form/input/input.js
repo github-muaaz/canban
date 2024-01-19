@@ -16,7 +16,7 @@ const InputStyled = styled.input`
   min-width: 100%;
 `
 
-const Input = ({name, label, onChange, ...rest}) => {
+const Input = ({name, label, onChange, hidden, ...rest}) => {
 
     const formContext = useContext(FormContext);
 
@@ -32,13 +32,20 @@ const Input = ({name, label, onChange, ...rest}) => {
     }
 
     return (
-        <div className={'flex--column g--8'}>
-            {label &&
-                <Label title={label} htmlFor={name}/>
-            }
+        <React.Fragment>
+            {
+                hidden ?
+                    <InputStyled id={name} name={name} hidden={hidden} {...rest} onChange={handleChange}/>
+                    :
+                    <div className={'flex--column g--8'}>
+                        {label &&
+                            <Label title={label} htmlFor={name}/>
+                        }
 
-            <InputStyled id={name} name={name} {...rest} onChange={handleChange}/>
-        </div>
+                        <InputStyled id={name} name={name} {...rest} onChange={handleChange}/>
+                    </div>
+            }
+        </React.Fragment>
     )
 }
 

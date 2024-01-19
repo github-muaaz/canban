@@ -66,7 +66,7 @@ const Board = () => {
 
                         <Button
                             className={'medium--grey f--size--24 m--top--40'}
-                            width={'280px'}
+                            w={'280px'}
                             borderR={'6px'}
                             noHover
                             bg={'var(--lines-light)'}

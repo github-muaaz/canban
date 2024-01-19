@@ -234,13 +234,12 @@ const colors = [
 
 
 export const getBoards = () => {
-    console.log('backend call: getBoards')
+    console.log('backend call: getBoards', boards)
     return boards;
 }
 
 export const getBoardTasks = id => {
-    console.log('backend call: getBoardTasks')
-    return boardColumn
+    const data = boardColumn
         .filter(bc => bc.boardId === id)
         .map(bc => columns.find(c => c.id === bc.columnId))
         .map(c => {
@@ -256,29 +255,35 @@ export const getBoardTasks = id => {
                 })
             return column;
         });
+
+    console.log('backend call: getBoardTasks', data)
+    return data;
 }
 
 export const getTask = (id) => {
-    console.log('backend call: getTask')
-
-    const task = tasks.find(t => t.id === id)
+    const task = tasks.find(t => t.id === id);
     const subtask = subtasks.filter(sb => sb.taskId === task.id);
+
     task.subtasks = subtask;
     task.completedSubtasks = subtask.filter(sb => sb.isCompleted).length;
 
+    console.log('backend call: getTask', task)
     return task;
 }
 
 export const getBoardStatuses = (boardId) => {
-    console.log('backend call: getBoardStatuses')
+    console.log('backend call input', boardId)
 
     const bc = boardColumn.filter(bc => bc.boardId === boardId);
 
-    return columns.filter(c => bc.find(bc => bc.columnId === c.id));
+    const data = columns.filter(c => bc.find(bc => bc.columnId === c.id));
+
+    console.log('backend call: getBoardStatuses', data)
+    return data;
 }
 
 export const setTaskStatus = (taskId, statusId) => {
-    console.log('backend call: setTaskStatus')
+    console.log('backend call: setTaskStatus', taskId, statusId)
 
     tasks.forEach(t => {
         if(t.id === taskId)
@@ -287,7 +292,7 @@ export const setTaskStatus = (taskId, statusId) => {
 }
 
 export const setSubtaskStatus = (id, isCompleted) => {
-    console.log('backend call: setSubtaskStatus')
+    console.log('backend call: setSubtaskStatus', id, isCompleted)
 
     subtasks.forEach(s => {
         if(s.id === id)

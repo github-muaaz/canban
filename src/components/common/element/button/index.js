@@ -18,7 +18,7 @@ const BtnStyled = styled.button`
   padding: ${({padding}) => padding ? padding : '15px 25px'};
   color: ${({color}) => color ? color : 'var(--white, #FFF)'};
   background-color: ${({bg}) => bg ? bg : 'var(--main-purple, #635FC7)'};
-  width: ${({width}) => width ? width : 'fit-content'};
+  width: ${({w}) => w ? w : 'fit-content'};
 
   :hover{
     background: ${({noHover}) => noHover ? noHover : 'var(--main-purple-hover, #635FC7)'};

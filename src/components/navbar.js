@@ -20,22 +20,34 @@ const Navbar = () => {
     const boardContext = useContext(BoardContext);
     const modalContext = useContext(ModalContext);
 
+    const board = boardContext.getSelectedBoard();
+
     const handleNew = () => {
         modalContext.setModalItem({})
-        modalContext.setModal(<TaskForm title={'Add New Task'}/>);
+        modalContext
+            .setModal(
+                <TaskForm
+                    title={'Add New Task'}
+                    btnTitle={'Create Task'}
+                    boardId={board?.id}
+                />);
     }
 
     return (
         <DivStyled className="flex--row align--itm--center justify--s--between">
-            <Text content={boardContext.getSelectedBoard()?.title} fs={'24px'}/>
+            {board &&
+                <React.Fragment>
+                    <Text content={board?.title} fs={'24px'}/>
 
-            <div className="flex--row align--itm--center justify--s--between g--25">
-                <Button onClick={handleNew}>
-                    + Add New Task
-                </Button>
+                    <div className="flex--row align--itm--center justify--s--between g--25">
+                        <Button onClick={handleNew}>
+                            + Add New Task
+                        </Button>
 
-                <Icon icon={MenuSvg}/>
-            </div>
+                        <Icon icon={MenuSvg}/>
+                    </div>
+                </React.Fragment>
+            }
         </DivStyled>
     )
 }

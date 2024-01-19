@@ -28,7 +28,7 @@ const IconContainerStyled = styled.div`
   cursor: pointer;
 `
 
-const SubtaskBox = ({task}) => {
+const SubtaskBox = ({task, setTask}) => {
 
     if (task.subtasks?.length <= 0)
         return;
@@ -40,15 +40,15 @@ const SubtaskBox = ({task}) => {
             <Span content={`Subtasks ${(task.completedSubtasks)} of ${task.subtasks?.length}`}/>
 
             <div className={'flex--column g--8'}>
-                {task.subtasks?.map(subtask => <SubtaskRow key={subtask.id} subtask={subtask} task={task}/>)}
+                {task.subtasks?.map(subtask => <SubtaskRow key={subtask.id} subtask={subtask} task={task} setTask={setTask}/>)}
             </div>
         </BoxStyled>
     )
 }
 
-const SubtaskRow = ({subtask, task}) => {
+const SubtaskRow = ({subtask, task, setTask}) => {
 
-    const modalContext = useContext(ModalContext);
+    // const modalContext = useContext(ModalContext);
     const boardContext = useContext(BoardContext);
 
     const handleChecked = () => {
@@ -75,7 +75,9 @@ const SubtaskRow = ({subtask, task}) => {
 
         boardContext.setBoardColumns(boardColumns);
 
-        modalContext.setModalItem({...task, ...tempTask});
+        setTask({...task, ...tempTask});
+
+        // modalContext.setModalItem({...task, ...tempTask})
     }
 
     return (
