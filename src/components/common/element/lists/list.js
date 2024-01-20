@@ -33,7 +33,7 @@ const List = ({item}) => {
         >
             <Icon icon={getIcon(boardContext, item.id)}/>
 
-            <Span content={item.title} fs={'15px'}/>
+            <Span content={item.name} fs={'15px'}/>
         </LiStyled>
     )
 }

@@ -19,14 +19,8 @@ const SidebarBoards = ({cutHeight}) => {
 
     const boardContext = useContext(BoardContext);
 
-    const [boards, setBoards] = useState([]);
-
-    useEffect(() => {
-        // backend call
-        const res = getBoards();
-
-        setBoards(res);
-    }, [])
+    const boards = boardContext.getBoards();
+    // const [boards, setBoards] = useState([]);
 
     useEffect(() => {
         boardContext.onBoardChanged(boards[0])

@@ -108,6 +108,27 @@ const dbColumns = [
     },
 ]
 
+const dbCommonColumns = [
+    {
+        id: '6837f484-fffd-47ea-8108-8797641d7d93',
+        name: 'done',
+        color: '#67E2AE',
+        order: 300,
+    },
+    {
+        id: '6837f484-fffd-47ea-8108-8797641d7d91',
+        name: 'todo',
+        color: '#49C4E5',
+        order: 100,
+    },
+    {
+        id: '6837f484-fffd-47ea-8108-8797641d7d92',
+        name: 'doing',
+        color: '#8471F2',
+        order: 200,
+    },
+]
+
 let dbTasks = [
     {
         id: '6837f484-fffd-47ea-8108-8797641d7d91',
@@ -184,16 +205,16 @@ let dbTasks = [
 
 const dbBoards = [
     {
-        id: "1", title: "Platform Launch",
+        id: "1", name: "Platform Launch",
     },
     {
-        id: "2", title: "Marketing Plan",
+        id: "2", name: "Marketing Plan",
     },
     {
-        id: "3", title: "Roadmap",
+        id: "3", name: "Roadmap",
     },
     {
-        id: "4", title: "Roadmap 2",
+        id: "4", name: "Roadmap 2",
     },
 ]
 
@@ -231,13 +252,45 @@ const dbBoardColumn = [
 const dbColors = [
     "#67E2AE",
     "#8471F2",
-    "#49C4E5"
+    "#49C4E5",
+    '#00b533',
+    '#ffffff',
+    '#dfe3e8',
+    '#c4cdd5',
+    '#002930',
+    '#00b533',
+    '#e2f5e9',
+    '#45b36b',
+    '#007b55',
+    '#1890ff',
+    '#0c53b7',
+    '#30c062',
+    '#229a16',
+    '#ffc107',
+    '#b78103',
+    '#ff4842',
+    '#b72136',
+    '#002930',
 ]
 
 
+export const getCommonCols = () => {
+    console.log('backend call: getCommonCols', dbCommonColumns)
+    return dbCommonColumns.sort((a, b) => a.order - b.order);
+}
+
 export const getBoards = () => {
     console.log('backend call: getBoards', dbBoards)
-    return dbBoards;
+
+    return dbBoards.map(b => {
+        return {
+            id: b.id,
+            name: b.name,
+            columns: dbBoardColumn
+                .filter(bc => bc.boardId === b.id)
+                .map(bc => dbColumns.find(c => c.id === bc.columnId))
+        }
+    });
 }
 
 export const getBoardTasks = id => {
@@ -259,7 +312,7 @@ export const getBoardTasks = id => {
         });
 
     console.log('backend call: getBoardTasks', data)
-    return data;
+    return [...data];
 }
 
 export const getTask = (id) => {
@@ -270,25 +323,25 @@ export const getTask = (id) => {
     task.completedSubtasks = subtask.filter(sb => sb.isCompleted).length;
 
     console.log('backend call: getTask', task)
-    return task;
+    return {...task};
 }
 
 export const getBoardStatuses = (boardId) => {
-    console.log('backend call input', boardId)
+    console.log('backend call: getBoardStatuses, input', boardId)
 
     const bc = dbBoardColumn.filter(bc => bc.boardId === boardId);
 
     const data = dbColumns.filter(c => bc.find(bc => bc.columnId === c.id));
 
-    console.log('backend call: getBoardStatuses', data)
-    return data;
+    console.log('backend call: getBoardStatuses, output', data)
+    return data.sort((a, b) => a.order - b.order);
 }
 
 export const setTaskStatus = (taskId, statusId) => {
     console.log('backend call: setTaskStatus', taskId, statusId)
 
     dbTasks.forEach(t => {
-        if(t.id === taskId)
+        if (t.id === taskId)
             t.statusId = statusId;
     })
 }
@@ -297,7 +350,7 @@ export const setSubtaskStatus = (id, isCompleted) => {
     console.log('backend call: setSubtaskStatus', id, isCompleted)
 
     dbSubtasks.forEach(s => {
-        if(s.id === id)
+        if (s.id === id)
             s.isCompleted = isCompleted;
     })
 }
@@ -306,10 +359,10 @@ export const saveTask = task => {
     console.log('backend call input: ', {...task});
 
     // on adding new task
-    if(!task.id){
+    if (!task.id) {
         task.id = uuid();
 
-        if(!task.statusId)
+        if (!task.statusId)
             task.statusId = getBoardInitialStatus(task.boardId);
 
         const subtasks = [...task.subtasks]
@@ -353,6 +406,92 @@ export const saveTask = task => {
             dbSubtasks.push(st);
         })
     }
+}
+
+export const saveBoard = board => {
+    console.log('backend call: saveBoard, input', board);
+
+    // on creating new board
+    if (!board.id) {
+        board.id = uuid();
+
+        const cols = [...board.columns];
+
+        console.log('cols', cols)
+
+        cols.forEach(col => {
+            // console.log('l', col)
+            console.log('is new',isNewColWithOldId(col))
+            if(isNewColWithOldId(col))
+                col.id = uuid();
+            else{
+                const oldCol = isOldColWithNewId(col);
+
+                if(oldCol)
+                    col.id = oldCol.id;
+            }
+        })
+
+        // for (let i = 0; i < cols.length; i++) {
+        //     const col = cols[i];
+        //
+        //     if (!col.order) {
+        //         if (cols.length === 1)
+        //             col.order = 100;
+        //         else if (i === 0) {
+        //             if (cols[i + 1]?.order)
+        //                 col.order = cols[i + 1].order / 2;
+        //             else
+        //                 col.order = 100;
+        //         } else if (i >= cols.length-1)
+        //             col.order = cols[i - 1].order * 2;
+        //         else {
+        //             if (cols[i + 1].order)
+        //                 col.order = (cols[i - 1].order + cols[i + 1].order) / 2;
+        //             else
+        //                 col.order = cols[i - 1].order * 2;
+        //         }
+        //     }
+        //
+        //     if(!col.color) {
+        //         col.color = dbColors[Math.round(Math.random() * (dbColors.length - 1))];
+        //     }
+        // }
+        //
+        cols.forEach(col => {
+            const boardColumn = {
+                boardId: board.id,
+                columnId: col.id,
+            }
+
+            dbBoardColumn.push(boardColumn)
+        })
+
+        cols.filter(col => !dbColumnContains(col.id))
+            .forEach(col => dbColumns.push(col));
+
+        dbBoards.push(board);
+    }
+
+
+    console.log('columns', dbColumns)
+}
+
+const isNewColWithOldId = col => {
+    return dbCommonColumns.find(c => {
+        // console.log('c', c)
+        // console.log('col', col)
+
+        return(c.id === col.id && c.name !== col.name)
+    })
+}
+
+const isOldColWithNewId = col => {
+    return dbCommonColumns.find(c => c.id !== col.id && c.name === col.name);
+}
+
+const dbColumnContains = colId => {
+    return dbColumns.find(col => col.id === colId)
 }
 
 const getBoardInitialStatus = (boardId) => {

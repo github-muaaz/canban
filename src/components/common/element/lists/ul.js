@@ -1,11 +1,21 @@
 import List from "./list";
 import Button from "../button";
 import Icon from "../icon/icon";
+import React, {useContext} from "react";
+import ModalContext from "../../../../context/modalContext";
+import BoardForm from "../../board/boardForm";
 
 const Ul = ({items}) => {
 
-    const handleClick = () => {
+    const modalContext = useContext(ModalContext);
 
+    const handleClick = () => {
+        modalContext
+            .setModal(
+                <BoardForm
+                    title={'Add New Board'}
+                    btnTitle={'Create New Board'}
+                />);
     }
 
     return (

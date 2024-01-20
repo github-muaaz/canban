@@ -27,7 +27,7 @@ const ListInput = ({name, label, ...rest}) => {
     )
 }
 
-const ListBody = ({name, btnLabel, placeholder, defaultValue}) => {
+const ListBody = ({name, btnLabel, inputName = 'value', placeholder, defaultValue}) => {
 
     const formContext = useContext(FormContext);
 
@@ -37,7 +37,7 @@ const ListBody = ({name, btnLabel, placeholder, defaultValue}) => {
 
     const getTemplate = () => ({
         id: uuid(),
-        title: '',
+        [inputName]: '',
     });
 
     const handleAdd = () => {
@@ -67,7 +67,7 @@ const ListBody = ({name, btnLabel, placeholder, defaultValue}) => {
 
         items.forEach(i => {
             if (i.id === id)
-                i.title = e.target.value;
+                i[inputName] = e.target.value;
         })
 
         data[name] = items;
@@ -86,7 +86,7 @@ const ListBody = ({name, btnLabel, placeholder, defaultValue}) => {
                                 <Input
                                     placeholder={placeholder}
                                     onChange={e => handleChange(e, item.id)}
-                                    defaultValue={item.title}
+                                    defaultValue={item[inputName]}
                                 />
                             </div>
 

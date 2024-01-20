@@ -7,6 +7,7 @@ import Button from "./common/element/button";
 import Icon from "./common/element/icon/icon-img";
 import Text from "./common/element/text";
 import TaskForm from "./common/task/taskForm";
+import BoardForm from "./common/board/boardForm";
 
 const DivStyled = styled.div`
   padding: 20px 30px;
@@ -33,18 +34,28 @@ const Navbar = () => {
                 />);
     }
 
+    const handleEdit = () => {
+        modalContext
+            .setModal(
+                <BoardForm
+                    title={'Add New Task'}
+                    btnTitle={'Create Task'}
+                    defaultValues={board}
+                />);
+    }
+
     return (
         <DivStyled className="flex--row align--itm--center justify--s--between">
             {board &&
                 <React.Fragment>
-                    <Text content={board?.title} fs={'24px'}/>
+                    <Text content={board?.name} fs={'24px'}/>
 
                     <div className="flex--row align--itm--center justify--s--between g--25">
                         <Button onClick={handleNew}>
                             + Add New Task
                         </Button>
 
-                        <Icon icon={MenuSvg}/>
+                        <Icon onClick={handleEdit} icon={MenuSvg}/>
                     </div>
                 </React.Fragment>
             }

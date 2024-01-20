@@ -1,14 +1,22 @@
 import {useEffect, useState} from "react";
-import {getBoardTasks} from "../../../utils/fake";
+import {getBoards, getBoardTasks} from "../../../utils/fake";
 import {BoardProvider} from "../../../context/boardContext";
 
 const BoardContainer = ({children}) => {
 
     const [selectedBoard, setSelectedBoard] = useState();
     const [boardColumns, setBoardColumns] = useState([]);
+    const [boards, setBoards] = useState([])
 
     useEffect(() => {
-        console.log('selected board changed', selectedBoard);
+        // backend call
+        const res = getBoards();
+
+        setBoards(res);
+    }, [])
+
+    useEffect(() => {
+        // console.log('selected board changed', selectedBoard);
 
         handleUpdateBoardData();
     }, [selectedBoard])
@@ -36,6 +44,14 @@ const BoardContainer = ({children}) => {
 
         setBoardColumns(data);
     }
+    const handleGetBoards = () => boards;
+    const handleUpdateBoards = () => {
+        // backend call
+        const res = getBoards();
+
+        console.log('boards updata', res)
+        setBoards(res);
+    }
 
     const boardContext = {
         getBoardColumns: handleGetBoardColumns,
@@ -44,6 +60,8 @@ const BoardContainer = ({children}) => {
         onBoardChanged: handleBoardChange,
         updateBoard: handleUpdateBoard,
         updateBoardData: handleUpdateBoardData,
+        getBoards: handleGetBoards,
+        updateBoards: handleUpdateBoards,
     };
 
     return(

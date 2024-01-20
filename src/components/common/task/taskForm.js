@@ -78,6 +78,7 @@ const FormBody = ({defaultValues, title, btnTitle, boardId}) => {
             <ListInput
                 name={'subtasks'}
                 label={'Subtasks'}
+                inputName={'title'}
                 btnLabel={'+ Add New Subtask'}
                 placeholder={'e.g. Make coffee'}
                 defaultValue={task?.subtasks}

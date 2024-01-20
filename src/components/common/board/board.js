@@ -26,7 +26,7 @@ const Board = () => {
 
     const boardColumns = boardContext.getBoardColumns();
 
-    const isBoardEmpty = boardColumns?.filter(c => c.tasks?.length > 0).length <= 0;
+    const isBoardEmpty = boardColumns?.length <= 0;
 
     const noSelectedBoard = boardContext.getSelectedBoard();
 
