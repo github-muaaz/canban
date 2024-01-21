@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Main from "./components/main";
 import ModalContainer from "./components/common/element/modal/modalContainer";
 import BoardContainer from "./components/common/board/boardContainer";
+import {ToastContainer} from "react-toastify";
 
 const BoxStyled = styled.div`
   height: 100vh;
@@ -53,6 +54,7 @@ function App() {
                 </ModalContainer>
             </BoardContainer>
             <GlobalStyle/>
+            <ToastContainer/>
         </BoxStyled>);
 }
 

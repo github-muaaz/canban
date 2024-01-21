@@ -11,6 +11,9 @@ import TaskForm from "./taskForm";
 import BoardContext from "../../../context/boardContext";
 import {Draggable} from "react-beautiful-dnd";
 import {getBoardStatuses, getTask, setTaskStatus} from "../../../utils/fake";
+import axios from "axios";
+import config from "../../../config.json";
+import {toast} from "react-toastify";
 
 const TaskStyled = styled.div`
   padding: 23px 16px;
@@ -43,9 +46,9 @@ const Task = ({task, index}) => {
                     <Text content={task.title} fs={'15px'}/>
 
                     {
-                        task.subtasksLenght <= 0
+                        task.subtasksLength <= 0
                             ? <Span content={`No subtasks`}/>
-                            : <Span content={`${task.completedSubtasks} of ${task.subtasksLenght} subtasks`}/>
+                            : <Span content={`${task.completedSubtasks} of ${task.subtasksLength} subtasks`}/>
                     }
                 </TaskStyled>
             )}
@@ -69,11 +72,19 @@ const ModalBody = () => {
 
     useEffect(() => {
         // backend call
-        const task = getTask(modalContext.getModalItem().id);
-        const statuses = getBoardStatuses(task?.boardId);
 
-        modalContext.setModalItem(task);
-        setStatuses(statuses);
+        axios.get(config.apiEndpoint + '/task/' + task?.id)
+            .then(res => {
+                modalContext.setModalItem(res.data.data)
+                setStatuses(res.data.data.statuses)
+            })
+            .catch(err => toast.error(err.message))
+
+        // const task = getTask(modalContext.getModalItem().id);
+        // const statuses = getBoardStatuses(task?.boardId);
+
+        // modalContext.setModalItem(task);
+        // setStatuses(statuses);
     }, []);
 
     const handleEdit = () => modalContext
@@ -97,7 +108,9 @@ const ModalBody = () => {
         modalContext.setModalItem(newTask);
 
         // backend call
-        setTaskStatus(task.id, statusId);
+        axios.get(config.apiEndpoint + '/task/' + task.id + '/' + statusId)
+            .catch(err => toast.error(err.message))
+        // setTaskStatus(task.id, statusId);
 
         boardContext.updateBoard(newTask, oldStatusId);
     }
