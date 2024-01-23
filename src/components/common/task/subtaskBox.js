@@ -1,13 +1,12 @@
+import {useContext} from "react";
 import styled from "styled-components";
 import Span from "../element/text/span";
 import Icon from "../element/icon/icon";
 import Text from "../element/text";
-import {useContext} from "react";
-import {setSubtaskStatus} from "../../../utils/fake";
 import BoardContext from "../../../context/boardContext";
-import axios from "axios";
 import config from "../../../config.json";
 import {toast} from "react-toastify";
+import http from "../../../service/httpService";
 
 const BoxStyled = styled.div`
   gap: 16px;
@@ -54,8 +53,7 @@ const SubtaskRow = ({subtask, task, setTask}) => {
 
     const handleChecked = () => {
         // backend call
-        // setSubtaskStatus(subtask.id, subtask.isCompleted);
-        axios.get(`${config.apiEndpoint}/subtask/${subtask.id}/${!subtask.isCompleted}`)
+        http.get(`${config.apiEndpoint}/subtask/${subtask.id}/${!subtask.isCompleted}`)
             .catch(err => toast.error(err.message))
 
         const boardColumns = [...boardContext.getBoardColumns()];

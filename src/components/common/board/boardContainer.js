@@ -1,10 +1,8 @@
 import {useEffect, useState} from "react";
-import {getBoards, getBoardTasks} from "../../../utils/fake";
+import {toast} from "react-toastify";
 import {BoardProvider} from "../../../context/boardContext";
 import http from '../../../service/httpService';
 import config from "../../../config.json";
-import {toast} from "react-toastify";
-import axios from "axios";
 
 const BoardContainer = ({children}) => {
 
@@ -12,18 +10,16 @@ const BoardContainer = ({children}) => {
     const [boardColumns, setBoardColumns] = useState([]);
     const [boards, setBoards] = useState([])
 
-    const getBoard = () => {
+    const getBoards = () => {
         // backend call
         http
             .get(config.apiEndpoint + "/board",)
             .then(res => setBoards(res.data.data))
             .catch(() => toast.error('something went wrong'))
-        // setBoards(getBoards())
-
     }
 
     useEffect(() => {
-        getBoard();
+        getBoards();
     }, [])
 
     useEffect(() => {
@@ -50,22 +46,19 @@ const BoardContainer = ({children}) => {
         setBoardColumns(tempBoardColumns);
     }
     const handleUpdateBoardData = () => {
+
         // // backend call
-        // const data = getBoardTasks(selectedBoard?.id);
-
-        axios.get(config.apiEndpoint + '/column/'+selectedBoard?.id)
-            .then(res => setBoardColumns(res.data.data))
-            .catch(() => toast.error('something went wrong'))
-
-        // setBoardColumns(data);
+        if (selectedBoard?.id)
+            http.get(config.apiEndpoint + '/column/'+selectedBoard?.id)
+                .then(res => setBoardColumns(res.data.data))
+                .catch(() => toast.error('something went wrong'))
     }
     const handleGetBoards = () => boards;
     const handleUpdateBoards = () => {
         // backend call
-        const res = getBoards();
+        getBoards();
 
-        console.log('boards updata', res)
-        setBoards(res);
+        console.log('boards updata')
     }
 
     const boardContext = {

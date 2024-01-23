@@ -20,3 +20,12 @@ export const mapToUrl = (str) => {
 export const getCompletedCount = items => {
     return items.filter(i => !!i.isCompleted).length;
 }
+
+
+export const capitalizeAll = (str) => {
+    return str.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+}
+
+export const capitalize = (str) => {
+    return str.charAt(0).toUpperCase() + str.substring(1);
+}

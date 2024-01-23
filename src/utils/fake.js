@@ -432,32 +432,32 @@ export const saveBoard = board => {
             }
         })
 
-        // for (let i = 0; i < cols.length; i++) {
-        //     const col = cols[i];
-        //
-        //     if (!col.order) {
-        //         if (cols.length === 1)
-        //             col.order = 100;
-        //         else if (i === 0) {
-        //             if (cols[i + 1]?.order)
-        //                 col.order = cols[i + 1].order / 2;
-        //             else
-        //                 col.order = 100;
-        //         } else if (i >= cols.length-1)
-        //             col.order = cols[i - 1].order * 2;
-        //         else {
-        //             if (cols[i + 1].order)
-        //                 col.order = (cols[i - 1].order + cols[i + 1].order) / 2;
-        //             else
-        //                 col.order = cols[i - 1].order * 2;
-        //         }
-        //     }
-        //
-        //     if(!col.color) {
-        //         col.color = dbColors[Math.round(Math.random() * (dbColors.length - 1))];
-        //     }
-        // }
-        //
+        for (let i = 0; i < cols.length; i++) {
+            const col = cols[i];
+
+            if (!col.order) {
+                if (cols.length === 1)
+                    col.order = 100;
+                else if (i === 0) {
+                    if (cols[i + 1]?.order)
+                        col.order = cols[i + 1].order / 2;
+                    else
+                        col.order = 100;
+                } else if (i >= cols.length-1)
+                    col.order = cols[i - 1].order * 2;
+                else {
+                    if (cols[i + 1].order)
+                        col.order = (cols[i - 1].order + cols[i + 1].order) / 2;
+                    else
+                        col.order = cols[i - 1].order * 2;
+                }
+            }
+
+            if(!col.color) {
+                col.color = dbColors[Math.round(Math.random() * (dbColors.length - 1))];
+            }
+        }
+
         cols.forEach(col => {
             const boardColumn = {
                 boardId: board.id,

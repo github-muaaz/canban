@@ -8,6 +8,8 @@ const SpanStyled = styled.span`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  display: ${({display}) => display ? display : 'unset'};
+  white-space: ${({ws}) => ws ? ws : 'unset'}
 `
 
 const Span = ({content, ...rest}) => {

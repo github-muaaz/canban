@@ -3,6 +3,7 @@ import styled from "styled-components";
 import BoardContext from "../../../../context/boardContext";
 import Icon from "../icon/icon";
 import Span from "../text/span";
+import {capitalizeAll} from "../../../../utils/utils";
 
 const LiStyled = styled.li`
   display: flex;
@@ -33,7 +34,7 @@ const List = ({item}) => {
         >
             <Icon icon={getIcon(boardContext, item.id)}/>
 
-            <Span content={item.name} fs={'15px'}/>
+            <Span content={capitalizeAll(item.name)} fs={'15px'}/>
         </LiStyled>
     )
 }

@@ -7,11 +7,10 @@ import Button from "../element/button";
 import Form from "../element/form/form";
 import React, {useContext, useEffect, useState} from "react";
 import FormContext from "../../../context/formContext";
-import {getBoardStatuses, saveTask} from "../../../utils/fake";
 import ModalContext from "../../../context/modalContext";
 import BoardContext from "../../../context/boardContext";
 
-const TaskForm = ({boardId, ...rest}) => {
+const TaskForm = ({board, apiCall, ...rest}) => {
 
     const modalContext = useContext(ModalContext);
     const boardContext = useContext(BoardContext);
@@ -20,15 +19,17 @@ const TaskForm = ({boardId, ...rest}) => {
 
         const data = {
             id: formData.id,
-            boardId: boardId,
-            title: formData.title,
+            boardId: board.id,
+            title: formData.title.toLowerCase(),
             statusId: formData.statusId,
             description: formData.description,
             subtasks: formData.subtasks?.filter(st => st.title.trim()) || [],
         }
 
+        console.log(apiCall)
+
         // backend call
-        saveTask(data)
+        apiCall(data);
 
         modalContext.setModal(null);
         boardContext.updateBoardData();
@@ -36,12 +37,12 @@ const TaskForm = ({boardId, ...rest}) => {
 
     return (
         <Form onSubmit={handleSubmit} className={'flex--column g--24'}>
-            <FormBody boardId={boardId} {...rest}/>
+            <FormBody board={board} {...rest}/>
         </Form>
     )
 }
 
-const FormBody = ({defaultValues, title, btnTitle, boardId}) => {
+const FormBody = ({defaultValues, title, btnTitle, board}) => {
 
     const [statuses, setStatuses] = useState([]);
 
@@ -51,10 +52,10 @@ const FormBody = ({defaultValues, title, btnTitle, boardId}) => {
     useEffect(() => {
         formContext.setData(defaultValues);
 
-        // backend call
-        const data = getBoardStatuses(boardId);
-
-        setStatuses(data);
+        if (defaultValues)
+            setStatuses(defaultValues.statuses)
+        else
+            setStatuses(board.columns)
     }, []);
 
     return (

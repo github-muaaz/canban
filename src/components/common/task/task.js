@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import React, {useContext, useEffect, useState} from "react";
+import styled from "styled-components";
 import ModalContext from "../../../context/modalContext";
 import Text from "../element/text";
 import Span from "../element/text/span";
@@ -10,10 +10,10 @@ import Select from "../element/form/select";
 import TaskForm from "./taskForm";
 import BoardContext from "../../../context/boardContext";
 import {Draggable} from "react-beautiful-dnd";
-import {getBoardStatuses, getTask, setTaskStatus} from "../../../utils/fake";
-import axios from "axios";
 import config from "../../../config.json";
 import {toast} from "react-toastify";
+import {capitalize} from "../../../utils/utils";
+import http from "../../../service/httpService";
 
 const TaskStyled = styled.div`
   padding: 23px 16px;
@@ -43,7 +43,7 @@ const Task = ({task, index}) => {
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                 >
-                    <Text content={task.title} fs={'15px'}/>
+                    <Text content={capitalize(task.title)} fs={'15px'}/>
 
                     {
                         task.subtasksLength <= 0
@@ -72,30 +72,31 @@ const ModalBody = () => {
 
     useEffect(() => {
         // backend call
-
-        axios.get(config.apiEndpoint + '/task/' + task?.id)
+        http.get(config.apiEndpoint + '/task/' + task?.id)
             .then(res => {
                 modalContext.setModalItem(res.data.data)
                 setStatuses(res.data.data.statuses)
             })
             .catch(err => toast.error(err.message))
-
-        // const task = getTask(modalContext.getModalItem().id);
-        // const statuses = getBoardStatuses(task?.boardId);
-
-        // modalContext.setModalItem(task);
-        // setStatuses(statuses);
     }, []);
 
-    const handleEdit = () => modalContext
-        .setModal(
+    const handleEdit = () => {
+        const apiCall = (data) => {
+            http.put(`${config.apiEndpoint}/task/${data.id}`, data)
+                .then(res => toast.info(res.message))
+                .catch(err => toast.error(err.message))
+        };
+
+        modalContext.setModal(
             <TaskForm
                 title={'Edit Task'}
                 btnTitle={'Save Changes'}
                 defaultValues={task}
-                boardId={boardContext.getSelectedBoard()?.id}
+                board={boardContext.getSelectedBoard()}
+                apiCall={apiCall}
             />
         );
+    }
 
     const handleStatusChange = e => {
         const statusId = e.target.value;
@@ -108,9 +109,8 @@ const ModalBody = () => {
         modalContext.setModalItem(newTask);
 
         // backend call
-        axios.get(config.apiEndpoint + '/task/' + task.id + '/' + statusId)
+        http.get(config.apiEndpoint + '/task/' + task.id + '/' + statusId)
             .catch(err => toast.error(err.message))
-        // setTaskStatus(task.id, statusId);
 
         boardContext.updateBoard(newTask, oldStatusId);
     }
@@ -118,13 +118,13 @@ const ModalBody = () => {
     return (
         <React.Fragment>
             <div className={'flex--row align--itm--start justify--s--between g--25'}>
-                <Text content={task.title}/>
+                <Text content={capitalize(task.title)}/>
 
                 <Icon onClick={handleEdit} margin={'10px 0 0 0'} icon={MenuSvg}/>
             </div>
 
             <Text
-                content={task.description}
+                content={capitalize(task.description)}
                 fs={'13px'}
                 className={'medium--grey font--weight--5 l--height--23'}
             />

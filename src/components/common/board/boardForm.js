@@ -1,15 +1,17 @@
 import React, {useContext, useEffect, useState} from "react";
 import ModalContext from "../../../context/modalContext";
 import BoardContext from "../../../context/boardContext";
-import {getBoardStatuses, getCommonCols, saveBoard} from "../../../utils/fake";
 import Form from "../element/form/form";
 import FormContext from "../../../context/formContext";
 import Text from "../element/text";
 import Input from "../element/form/input";
 import ListInput from "../element/form/listInput";
 import Button from "../element/button";
+import config from "../../../config.json";
+import {toast} from "react-toastify";
+import http from "../../../service/httpService";
 
-const BoardForm = ({...rest}) => {
+const BoardForm = ({apiCall, ...rest}) => {
 
     const modalContext = useContext(ModalContext);
     const boardContext = useContext(BoardContext);
@@ -21,11 +23,11 @@ const BoardForm = ({...rest}) => {
         const data = {
             id: formData.id,
             name: formData.name,
-            columns: formData?.columns.map(col => col.name),
+            columns: formData?.columns.map(col => col.name.toLowerCase()),
         }
 
         // // backend call
-        saveBoard(data)
+        apiCall(data);
 
         modalContext.setModal(null);
         boardContext.updateBoards();
@@ -52,10 +54,14 @@ const FormBody = ({defaultValues, title, btnTitle}) => {
 
         if (!defaultValues) {
             // backend call
-            const data = getCommonCols();
-            setColumns(data);
-
-            formContext.setData({columns: data})
+            http.get(`${config.apiEndpoint}/column/common`)
+                .then(res => {
+                    setColumns(res.data.data);
+                    formContext.setData({columns: res.data.data});
+                })
+                .catch(err => toast.error(err.message))
+            // const data = getCommonCols();
+            // setColumns(data);
         }
         else
             formContext.setData(defaultValues);
