@@ -9,7 +9,6 @@ import Text from "./common/element/text";
 import TaskForm from "./common/task/taskForm";
 import BoardForm from "./common/board/boardForm";
 import config from "../config.json";
-import axios from "axios";
 import {toast} from "react-toastify";
 import {capitalizeAll} from "../utils/utils";
 import Popover from "./common/element/opover";

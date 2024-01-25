@@ -362,8 +362,8 @@ export const saveTask = task => {
     if (!task.id) {
         task.id = uuid();
 
-        if (!task.statusId)
-            task.statusId = getBoardInitialStatus(task.boardId);
+        // if (!task.statusId)
+            // task.statusId = getBoardInitialStatus(task.boardId);
 
         const subtasks = [...task.subtasks]
 
@@ -425,10 +425,10 @@ export const saveBoard = board => {
             if(isNewColWithOldId(col))
                 col.id = uuid();
             else{
-                const oldCol = isOldColWithNewId(col);
+                // const oldCol = isOldColWithNewId(col);
 
-                if(oldCol)
-                    col.id = oldCol.id;
+                // if(oldCol)
+                //     col.id = oldCol.id;
             }
         })
 
@@ -467,8 +467,8 @@ export const saveBoard = board => {
             dbBoardColumn.push(boardColumn)
         })
 
-        cols.filter(col => !dbColumnContains(col.id))
-            .forEach(col => dbColumns.push(col));
+        // cols.filter(col => !dbColumnContains(col.id))
+        //     .forEach(col => dbColumns.push(col));
 
         dbBoards.push(board);
     }

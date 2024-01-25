@@ -5,7 +5,6 @@ import Column from "../column";
 import Button from "../element/button";
 import BoardContext from "../../../context/boardContext";
 import {DragDropContext} from "react-beautiful-dnd";
-import {setTaskStatus} from "../../../utils/fake";
 import NoSelectedBoard from "./noSelectedBoard";
 import http from "../../../service/httpService";
 import config from "../../../config.json";
@@ -47,7 +46,8 @@ const Board = () => {
             const sourceColIndex = boardColumns.findIndex(c => c.id === source.droppableId);
             const destinationColIndex = boardColumns.findIndex(c => c.id === destination.droppableId);
 
-            setTaskStatus(draggableId, destination.droppableId);
+            http.get(config.apiEndpoint + '/task/' + draggableId + '/' + destination.droppableId)
+                .catch(err => toast.error(err.message))
 
             const sourceCol = boardColumns[sourceColIndex];
             const destinationCol = boardColumns[destinationColIndex];

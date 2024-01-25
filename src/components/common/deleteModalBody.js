@@ -4,7 +4,6 @@ import ModalContext from "../../context/modalContext";
 import BoardContext from "../../context/boardContext";
 import http from "../../service/httpService";
 import Span from "./element/text/span";
-import config from "../../config.json";
 import Button from "./element/button";
 import Text from "./element/text";
 
