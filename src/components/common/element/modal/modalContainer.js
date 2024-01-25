@@ -1,6 +1,7 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import styled from "styled-components";
 import {ModalProvider} from "../../../../context/modalContext";
+import MyThemeContext from "../../../../context/myThemeContext";
 
 const ContainerStyled = styled.div`
   background: rgba(0, 0, 0, 0.5);
@@ -14,14 +15,20 @@ const ContainerStyled = styled.div`
 
 const ModalStyled = styled.div`
   border-radius: 6px;
-  background: var(--white, #FFF);
+  background: ${({bg}) => bg};
   z-index: 900;
   padding: 32px;
-  width: 32%;
+  width: 480px;
   gap: 20px;
+  
+  @media (max-width: 768px){
+    width: 375px;
+  }
 `
 
 const ModalContainer = ({children}) => {
+
+    const themeContext = useContext(MyThemeContext);
 
     const [modal, setModal] = useState();
     const [modalItem, setModalItem] = useState();
@@ -61,7 +68,7 @@ const ModalContainer = ({children}) => {
         <ModalProvider value={context}>
             {modal &&
                 <ContainerStyled onClick={handleOutsideClick}>
-                    <ModalStyled className={'center--v--g flex--column'}>
+                    <ModalStyled bg={themeContext.getTheme().lightBgColor} className={'center--v--g flex--column'}>
                         {modal}
                     </ModalStyled>
                 </ContainerStyled>

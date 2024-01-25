@@ -7,6 +7,7 @@ import {v4 as uuid} from "uuid";
 import FormContext from "../../../../../context/formContext";
 import Icon from "../../icon/icon";
 import Label from "../label";
+import MyThemeContext from "../../../../../context/myThemeContext";
 
 const ContainerStyled = styled.div`
   gap: 16px;
@@ -30,6 +31,7 @@ const ListInput = ({name, label, ...rest}) => {
 const ListBody = ({name, btnLabel, inputName = 'value', placeholder, defaultValue}) => {
 
     const formContext = useContext(FormContext);
+    const themeContext = useContext(MyThemeContext);
 
     const formData = formContext.getData();
 
@@ -98,11 +100,11 @@ const ListBody = ({name, btnLabel, inputName = 'value', placeholder, defaultValu
 
             <Button
                 type={'button'}
-                bg={'#635FC71A'}
+                bg={themeContext.getTheme().btnBgColor}
                 w={'100%'}
                 onClick={handleAdd}
                 padding={'8px 20px'}
-                noHover={'#635FC740'}
+                noHover={themeContext.getTheme().btnBgHover}
             >
                 <Span
                     content={btnLabel}

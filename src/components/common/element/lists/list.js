@@ -17,6 +17,9 @@ const LiStyled = styled.li`
   span {
     color: ${({isActive}) => isActive ? 'var(--white, #FFF)' : 'var(--medium-grey, #828FA3)'};
   }
+  :hover{
+    background: var(--main-purple-hover, A8A4FFFF);
+  }
 `
 
 const List = ({item}) => {

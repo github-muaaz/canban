@@ -9,7 +9,8 @@ const TextStyled = styled.p`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  margin: 0;
+  margin: ${({margin}) => margin ? margin : 0};
+  text-decoration: ${({highlight}) => highlight ? 'line-through' : ''};
 `
 
 const Index = ({content, ...rest}) => {

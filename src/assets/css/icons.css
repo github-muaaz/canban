@@ -64,6 +64,12 @@
     background: var(--white, #FFF);
 }
 
+.checked-dark{
+    mask-image: url("../icons/checked-dark.svg");
+    -webkit-mask-image: url("../icons/checked-dark.svg");
+    background: var(--dark-grey, #2B2C37);
+}
+
 .close{
     mask-image: url("../icons/close.svg");
     -webkit-mask-image: url("../icons/close.svg");

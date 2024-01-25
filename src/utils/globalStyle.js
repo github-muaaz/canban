@@ -102,5 +102,10 @@ export default createGlobalStyle(css`
     margin-left: 35px;
     margin-bottom: 19px;
   }
+  
+  
+  @media screen and(max-width: 1440px) and(min-width: 768px){
+    
+  }
 
 `);

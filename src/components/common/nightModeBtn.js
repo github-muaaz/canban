@@ -1,28 +1,35 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import Button from "./element/button";
 import Icon from "./element/icon/icon";
+import MyThemeContext from "../../context/myThemeContext";
+import config from "../../config.json";
 
 const NightModeBtn = () => {
 
     const [checked, setChecked] = useState(false);
     const [position, setPosition] = useState('10');
 
+    const themeContext = useContext(MyThemeContext);
+
     const handleClick = () => {
         if (checked) {
             setPosition('10');
             setChecked(false);
+
+            themeContext.setTheme(config.defaultTheme)
             return;
         }
 
         setPosition('30');
         setChecked(true);
+        themeContext.setTheme(config.darkTheme)
     }
 
     return (
         <Button
             onClick={handleClick}
             borderR={'6px'}
-            bg={"var(--light-grey-light-bg, #F4F7FD)"}
+            bg={themeContext.getTheme().darkBgColor}
             w={'100%'}
             noHover
         >

@@ -7,6 +7,7 @@ import BoardContext from "../../../context/boardContext";
 import config from "../../../config.json";
 import {toast} from "react-toastify";
 import http from "../../../service/httpService";
+import MyThemeContext from "../../../context/myThemeContext";
 
 const BoxStyled = styled.div`
   gap: 16px;
@@ -15,13 +16,13 @@ const BoxStyled = styled.div`
 const CardStyled = styled.div`
   padding: 13px;
   border-radius: 4px;
-  background: var(--light-grey-light-bg, #F4F7FD);
+  background: ${({bg}) => bg};
 `
 
 const IconContainerStyled = styled.div`
   border-radius: 2px;
   border: 1px solid rgba(130, 143, 163, 0.25);
-  background: ${({checked}) => checked ? 'var(--main-purple, #635FC7)' : 'var(--White, #FFF)'};
+  background: ${({checked, bg}) => checked ? 'var(--main-purple, #635FC7)' : bg};
   padding: 2.5px;
   width: 18px;
   height: 18px;
@@ -31,14 +32,17 @@ const IconContainerStyled = styled.div`
 
 const SubtaskBox = ({task, setTask}) => {
 
+    const themeContext = useContext(MyThemeContext);
+
     if (task.subtasks?.length <= 0)
         return;
 
-    // console.log('task', task)
-
     return (
         <BoxStyled className={'flex--column'}>
-            <Span content={`Subtasks ${(task.completedSubtasks)} of ${task.subtasks?.length}`}/>
+            <Span
+                color={themeContext.getTheme().textColor2}
+                content={`Subtasks ${(task.completedSubtasks)} of ${task.subtasks?.length}`}
+            />
 
             <div className={'flex--column g--8'}>
                 {task.subtasks?.map(subtask => <SubtaskRow key={subtask.id} subtask={subtask} task={task} setTask={setTask}/>)}
@@ -50,6 +54,7 @@ const SubtaskBox = ({task, setTask}) => {
 const SubtaskRow = ({subtask, task, setTask}) => {
 
     const boardContext = useContext(BoardContext);
+    const themeContext = useContext(MyThemeContext);
 
     const handleChecked = () => {
         // backend call
@@ -80,15 +85,26 @@ const SubtaskRow = ({subtask, task, setTask}) => {
     }
 
     return (
-        <CardStyled className={'flex--row g--16 align--itm--center'}>
+        <CardStyled
+            bg={themeContext.getTheme().darkBgColor}
+            className={'flex--row g--16 align--itm--center'}
+        >
             <IconContainerStyled
                 onClick={handleChecked}
                 checked={subtask.isCompleted}
+                bg={themeContext.getTheme().lightBgColor}
             >
-                <Icon w={'11px'} h={'11px'} icon={'checked'}/>
+                <Icon w={'11px'} h={'11px'} icon={themeContext.getTheme().name === 'dark' ? 'checked-dark' : 'checked'}/>
             </IconContainerStyled>
 
-            <Text fs={'12px'} content={subtask.title}/>
+            <Text
+                fs={'12px'}
+                content={subtask.title}
+                highlight={subtask.isCompleted}
+                color={subtask.isCompleted
+                    ? 'var(--Medium-Grey, #828FA3)'
+                    : themeContext.getTheme().textColor}
+            />
         </CardStyled>
     )
 }

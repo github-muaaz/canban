@@ -7,9 +7,15 @@ import BoardContext from "../../../context/boardContext";
 import {DragDropContext} from "react-beautiful-dnd";
 import {setTaskStatus} from "../../../utils/fake";
 import NoSelectedBoard from "./noSelectedBoard";
+import http from "../../../service/httpService";
+import config from "../../../config.json";
+import {toast} from "react-toastify";
+import BoardForm from "./boardForm";
+import ModalContext from "../../../context/modalContext";
+import MyThemeContext from "../../../context/myThemeContext";
 
 const ContainerStyled = styled.div`
-  background: var(--light-grey-light-bg, #F4F7FD);
+  background: ${({bg}) => bg};
   position: relative;
   overflow-x: auto;
 `
@@ -23,6 +29,8 @@ const BoxStyled = styled.div`
 const Board = () => {
 
     const boardContext = useContext(BoardContext);
+    const modalContext = useContext(ModalContext);
+    const themeContext = useContext(MyThemeContext);
 
     const boardColumns = boardContext.getBoardColumns();
 
@@ -58,8 +66,24 @@ const Board = () => {
         }
     }
 
+    const handleClick = () => {
+        const apiCall = (data) => {
+            http.put(`${config.apiEndpoint}/board/${data.id}`, data)
+                .then(res => toast.info(res.message))
+                .catch(err => toast.error(err.message))
+        }
+        modalContext
+            .setModal(
+                <BoardForm
+                    title={'Edit Board'}
+                    btnTitle={'Save Board'}
+                    defaultValues={boardContext.getSelectedBoard()}
+                    apiCall={apiCall}
+                />);
+    }
+
     return (
-        <ContainerStyled className={"board--box w--100"}>
+        <ContainerStyled bg={themeContext.getTheme().darkBgColor} className={"board--box w--100"}>
             {!noSelectedBoard
                 ? <NoSelectedBoard/>
                 : (isBoardEmpty)
@@ -75,7 +99,8 @@ const Board = () => {
                                 w={'280px'}
                                 borderR={'6px'}
                                 noHover
-                                bg={'var(--lines-light)'}
+                                bg={themeContext.getTheme().lightBgColor}
+                                onClick={handleClick}
                             >
                                 + New Column
                             </Button>

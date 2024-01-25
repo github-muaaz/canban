@@ -2,11 +2,13 @@ import styled from "styled-components";
 import React, {useContext} from "react";
 import FormContext from "../../../../../context/formContext";
 import Label from "../label";
+import MyThemeContext from "../../../../../context/myThemeContext";
 
 const TextareaStyled = styled.textarea`
   border-radius: 4px;
   border: 1px solid rgba(130, 143, 163, 0.25);
-  background: var(--white, #FFF);
+  background: ${({bg}) => bg};
+  color: ${({color}) => color};
   padding: 8px 16px;
   font-size: 13px;
   font-style: normal;
@@ -20,6 +22,7 @@ const TextareaStyled = styled.textarea`
 const Textarea = ({name, label, ...rest}) => {
 
     const formContext = useContext(FormContext);
+    const themeContext = useContext(MyThemeContext);
 
     const handleChange = e => {
         const data = {
@@ -34,7 +37,14 @@ const Textarea = ({name, label, ...rest}) => {
                 <Label title={label} htmlFor={name}/>
             }
 
-            <TextareaStyled id={name} name={name} {...rest} onChange={handleChange}/>
+            <TextareaStyled
+                id={name}
+                name={name}
+                {...rest}
+                onChange={handleChange}
+                bg={themeContext.getTheme().lightBgColor}
+                color={themeContext.getTheme().textColor2}
+            />
         </div>
     )
 }

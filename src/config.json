@@ -1,3 +1,22 @@
 {
-  "apiEndpoint": "http://localhost:8090/api"
+  "apiEndpoint": "http://localhost:8090/api",
+  "storageKey": "auth",
+  "darkTheme": {
+    "name": "dark",
+    "lightBgColor": "var(--dark-grey, #2B2C37)",
+    "darkBgColor": "var(--very-dark-grey-dark-bg, #20212C)",
+    "textColor": "var(--white, #FFF)",
+    "textColor2": "var(--white, #FFF)",
+    "btnBgColor": "var(--white, #FFF)",
+    "btnBgHover": "var(--lines-light-hover, #E4EBFA)"
+  },
+  "defaultTheme": {
+    "name": "light",
+    "lightBgColor": "var(--white, #FFF)",
+    "darkBgColor": "var(--light-grey-light-bg, #F4F7FD)",
+    "textColor": "var(--black, #000112)",
+    "textColor2": "var(--medium-grey, #828FA3)",
+    "btnBgColor": "#635FC71A",
+    "btnBgHover": "#635FC740"
+  }
 }

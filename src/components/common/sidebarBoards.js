@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Ul from "./element/lists/ul";
 import BoardContext from "../../context/boardContext";
 import Text from "./element/text";
+import MyThemeContext from "../../context/myThemeContext";
 
 const BoxStyled = styled.div`
    height: calc(100vh - ${({cutHeight}) => cutHeight + 'px'});

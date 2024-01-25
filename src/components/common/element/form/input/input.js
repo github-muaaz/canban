@@ -2,11 +2,13 @@ import React, {useContext} from "react";
 import styled from "styled-components";
 import FormContext from "../../../../../context/formContext";
 import Label from "../label";
+import MyThemeContext from "../../../../../context/myThemeContext";
 
 const InputStyled = styled.input`
+  background: ${({bg}) => bg};
+  color: ${({color}) => color};
   border-radius: 4px;
   border: 1px solid rgba(130, 143, 163, 0.25);
-  background: var(--white, #FFF);
   padding: 8px 16px;
   font-size: 13px;
   font-style: normal;
@@ -19,6 +21,7 @@ const InputStyled = styled.input`
 const Input = ({name, label, onChange, hidden, ...rest}) => {
 
     const formContext = useContext(FormContext);
+    const themeContext = useContext(MyThemeContext);
 
     const handleChange = e => {
         if (onChange)
@@ -42,7 +45,14 @@ const Input = ({name, label, onChange, hidden, ...rest}) => {
                             <Label title={label} htmlFor={name}/>
                         }
 
-                        <InputStyled id={name} name={name} {...rest} onChange={handleChange}/>
+                        <InputStyled
+                            id={name}
+                            name={name}
+                            {...rest}
+                            bg={themeContext.getTheme().lightBgColor}
+                            color={themeContext.getTheme().textColor2}
+                            onChange={handleChange}
+                        />
                     </div>
             }
         </React.Fragment>

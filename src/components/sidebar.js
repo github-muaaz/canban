@@ -5,10 +5,12 @@ import Button from "./common/element/button";
 import Icon from "./common/element/icon/icon";
 import IconImg from "./common/element/icon/icon-img";
 import OpenEyeSvg from "../assets/icons/open-eye.svg";
-import {useLayoutEffect, useRef, useState} from "react";
+import {useContext, useLayoutEffect, useRef, useState} from "react";
+import MyThemeContext from "../context/myThemeContext";
 
 const WrapperStyled = styled.div`
   position: relative;
+  background: ${({bg}) => bg};
 `
 
 const TempStyled = styled.div`
@@ -18,6 +20,7 @@ const TempStyled = styled.div`
 `
 
 const DivStyled = styled.aside`
+  background: ${({bg}) => bg};
   position: absolute;
   top: 0;
   width: 300px;
@@ -25,7 +28,6 @@ const DivStyled = styled.aside`
   transition: 0.25s linear;
   border-right: 1px solid var(--lines-light, #E4EBFA);
   padding-bottom: 20px;
-  background: var(--white, #FFF);
   z-index: 800;
 `
 
@@ -45,6 +47,7 @@ const BottomStyled = styled.div`
 const Sidebar = ({header, isSidebarOpen, setIsSidebarOpen}) => {
 
     const btnRef = useRef(null);
+    const themeContext = useContext(MyThemeContext);
 
     const [btnHeight, setHeight] = useState(0);
 
@@ -69,10 +72,10 @@ const Sidebar = ({header, isSidebarOpen, setIsSidebarOpen}) => {
     const cutBoardsHeight = header.offsetHeight + btnHeight;
 
     return (
-        <WrapperStyled>
+        <WrapperStyled bg={themeContext.getTheme().lightBgColor}>
             <TempStyled id={"my--inner--sidebar"}/>
 
-            <DivStyled id={"my--sidebar"}>
+            <DivStyled id={"my--sidebar"} bg={themeContext.getTheme().lightBgColor}>
                 <SidebarBoards cutHeight={cutBoardsHeight}/>
 
                 <BottomStyled className={'w--100'} ref={btnRef}>

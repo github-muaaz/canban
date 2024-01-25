@@ -16,25 +16,28 @@ import Popover from "./common/element/opover";
 import List from "./common/element/lists/list-2";
 import Span from "./common/element/text/span";
 import http from "../service/httpService";
+import DeleteModalBody from "./common/deleteModalBody";
+import MyThemeContext from "../context/myThemeContext";
 
 const DivStyled = styled.div`
   padding: 20px 30px;
   width: 100%;
   border-bottom: 1px solid var(--lines-light, #E4EBFA);
   border-left: 1px solid var(--lines-light, #E4EBFA);
+  background: ${({bg}) => bg};
 `
 
 const Navbar = () => {
 
     const boardContext = useContext(BoardContext);
     const modalContext = useContext(ModalContext);
+    const themeContext = useContext(MyThemeContext);
 
     const board = boardContext.getSelectedBoard();
 
-
-    const handleNew = () => {
+    const handleNewTask = () => {
         const apiCall = (data) => {
-            axios.post(`${config.apiEndpoint}/task`, data)
+            http.post(`${config.apiEndpoint}/task`, data)
                 .then(res => toast.info(res.message))
                 .catch(err => toast.error(err.message))
         }
@@ -49,47 +52,48 @@ const Navbar = () => {
             />);
     }
 
-    const handleEdit = () => {
+    const handleEditBoard = () => {
         const apiCall = (data) => {
-            axios.put(`${config.apiEndpoint}/board/${data.id}`, data)
+            http.put(`${config.apiEndpoint}/board/${data.id}`, data)
                 .then(res => toast.info(res.message))
                 .catch(err => toast.error(err.message))
         }
         modalContext
             .setModal(
                 <BoardForm
-                    title={'Add New Task'}
-                    btnTitle={'Create Task'}
+                    title={'Edit Board'}
+                    btnTitle={'Save Board'}
                     defaultValues={board}
                     apiCall={apiCall}
                 />);
     }
 
-    const handleDelete = () => {
-        http.delete(`${config.apiEndpoint}/board/${board?.id}`)
-            .then(res => toast.info(res.message))
-            .catch(err => toast.error(err.message));
-
-        boardContext.updateBoards();
+    const handleDeleteBoard = () => {
+        modalContext.setModalItem({})
+        modalContext.setModal(<DeleteModalBody
+            url={`${config.apiEndpoint}/board/${board?.id}`}
+            title={'Delete this board?'}
+            warning={'Are you sure you want to delete the ‘Platform Launch’ board? This action will remove all columns and tasks and cannot be reversed.'}
+        />);
     }
 
     return (
         <DivStyled className="flex--row align--itm--center justify--s--between">
             {board &&
                 <React.Fragment>
-                    <Text content={capitalizeAll(board?.name)} fs={'24px'}/>
+                    <Text content={capitalizeAll(board?.name)} fs={'24px'} color={themeContext.getTheme().textColor}/>
 
                     <div className="flex--row align--itm--center justify--s--between g--25">
-                        <Button onClick={handleNew}>
+                        <Button onClick={handleNewTask}>
                             + Add New Task
                         </Button>
 
                         <Popover component={<Icon icon={MenuSvg}/>}>
-                            <List onClick={handleEdit}>
+                            <List onClick={handleEditBoard}>
                                 <Span ws={'nowrap'} content={'Edit Board'}/>
                             </List>
 
-                            <List onClick={handleDelete}>
+                            <List onClick={handleDeleteBoard}>
                                 <Span color={'var(--red, #EA5555)'} ws={'nowrap'} content={'Delete Board'}/>
                             </List>
                         </Popover>

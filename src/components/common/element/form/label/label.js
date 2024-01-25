@@ -1,11 +1,14 @@
-import React from "react";
+import React, {useContext} from "react";
 import Span from "../../text/span";
+import MyThemeContext from "../../../../../context/myThemeContext";
 
 const Label = ({htmlFor, title}) => {
 
+    const themeContext = useContext(MyThemeContext);
+
     return(
         <label htmlFor={htmlFor}>
-            <Span content={title}/>
+            <Span content={title} color={themeContext.getTheme().textColor2}/>
         </label>
     )
 }

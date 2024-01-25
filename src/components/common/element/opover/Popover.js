@@ -1,12 +1,13 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import styled from "styled-components";
+import MyThemeContext from "../../../../context/myThemeContext";
 
 const ContainerStyled = styled.div`
   position: relative;
 `
 
 const PopoverStyled = styled.div`
-  background: var(--white, #FFF);
+  background: ${({bg}) => bg};
   box-shadow: 0 4px 6px 0 rgba(54, 78, 126, 0.10);
   position: absolute;
   right: 100%;
@@ -17,6 +18,8 @@ const PopoverStyled = styled.div`
 `
 
 const Popover = ({component, children}) => {
+
+    const themeContext = useContext(MyThemeContext);
 
     const [open, setOpen] = useState(false);
 
@@ -30,7 +33,7 @@ const Popover = ({component, children}) => {
                 {component}
             </div>
             {open &&
-                <PopoverStyled className={'flex--column'}>
+                <PopoverStyled className={'flex--column'} bg={themeContext.getTheme().darkBgColor}>
                     {children}
                 </PopoverStyled>}
         </ContainerStyled>
