@@ -86,7 +86,7 @@ const ModalBody = () => {
                 setStatuses(res.data.data.statuses)
             })
             .catch(err => toast.error(err.message))
-    }, []);
+    }, [modalContext, task?.id]);
 
     const handleEdit = () => {
         const apiCall = (data) => {

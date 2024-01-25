@@ -26,7 +26,8 @@ const BoardContainer = ({children}) => {
         // console.log('selected board changed', selectedBoard);
 
         handleUpdateBoardData();
-    }, [selectedBoard])
+        // eslint-disable-next-line no-use-before-define
+    }, [handleUpdateBoardData, selectedBoard])
 
     const handleBoardChange = board => setSelectedBoard(board);
     const handleGetSelectedBoard = () => selectedBoard;

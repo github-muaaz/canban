@@ -1,4 +1,3 @@
-import axios from 'axios';
 // import {toast} from "react-toastify";
 
 // axios.interceptors.response.use(null, error => {
@@ -14,6 +13,9 @@ import axios from 'axios';
 //     return Promise.reject(error)
 // });
 
+import axios from 'axios';
+
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
     get: axios.get,
     post: axios.post,

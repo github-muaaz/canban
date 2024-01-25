@@ -23,7 +23,7 @@ const SidebarBoards = ({cutHeight}) => {
 
     useEffect(() => {
         boardContext.onBoardChanged(boards[0])
-    }, [boards])
+    }, [boardContext, boards])
 
     return (
         <div style={{padding: '20px 20px 35px 0'}}>

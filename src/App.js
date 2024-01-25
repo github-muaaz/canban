@@ -20,26 +20,24 @@ function App() {
     const [header, setHeader] = useState(0);
     const [theme, setTheme] = useState(config.defaultTheme);
 
-    const setHeights = () => {
-        setHeader(navRef.current);
-        // console.log('navbar h: ', navRef.current.offsetHeight)
-    };
-
-    useEffect(() => {
-        setHeights();
-
-        const key = localStorage.getItem(config.storageKey);
-
-        if (!key)
-            localStorage.setItem(config.storageKey, theme);
-    }, []);
-
     useEffect(() => {
         console.log(theme)
         localStorage.setItem(config.storageKey, theme);
     }, [theme])
 
     useEffect(() => {
+        const setHeights = () => {
+            setHeader(navRef.current);
+            // console.log('navbar h: ', navRef.current.offsetHeight)
+        };
+
+        setHeights();
+
+        const key = localStorage.getItem(config.storageKey);
+
+        if (!key)
+            localStorage.setItem(config.storageKey, theme);
+
         function handleWindowResize() {
             setHeights();
         }
@@ -51,7 +49,7 @@ function App() {
         return () => {
             window.removeEventListener('resize', handleWindowResize);
         };
-    }, []);
+    }, [theme]);
 
     const handleGetTheme = () => theme;
     const handleSetTheme = (theme) => setTheme(theme);
