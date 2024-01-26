@@ -8,7 +8,8 @@
     "textColor": "var(--white, #FFF)",
     "textColor2": "var(--white, #FFF)",
     "btnBgColor": "var(--white, #FFF)",
-    "btnBgHover": "var(--lines-light-hover, #E4EBFA)"
+    "btnBgHover": "var(--lines-light-hover, #E4EBFA)",
+    "btnHoverColor": "var(--main-purple, #635FC7)"
   },
   "defaultTheme": {
     "name": "light",
@@ -17,6 +18,7 @@
     "textColor": "var(--black, #000112)",
     "textColor2": "var(--medium-grey, #828FA3)",
     "btnBgColor": "#635FC71A",
-    "btnBgHover": "#635FC740"
+    "btnBgHover": "#635FC740",
+    "btnHoverColor": "var(--main-purple, #635FC7)"
   }
 }

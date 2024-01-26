@@ -38,6 +38,12 @@
     background-color: #635FC7 !important;
 }
 
+.drop--up {
+    mask-image: url("../icons/drop-up.svg");
+    -webkit-mask-image: url("../icons/drop-up.svg");
+    background-color: #635FC7 !important;
+}
+
 .eye {
     mask-image: url("../icons/eye.svg");
     -webkit-mask-image: url("../icons/eye.svg");
@@ -58,19 +64,19 @@
     -webkit-mask-image: url("../icons/sun.svg");
 }
 
-.checked{
+.checked {
     mask-image: url("../icons/checked.svg");
     -webkit-mask-image: url("../icons/checked.svg");
     background: var(--white, #FFF);
 }
 
-.checked-dark{
+.checked-dark {
     mask-image: url("../icons/checked-dark.svg");
     -webkit-mask-image: url("../icons/checked-dark.svg");
     background: var(--dark-grey, #2B2C37);
 }
 
-.close{
+.close {
     mask-image: url("../icons/close.svg");
     -webkit-mask-image: url("../icons/close.svg");
     background: var(--medium-grey, #828FA3);

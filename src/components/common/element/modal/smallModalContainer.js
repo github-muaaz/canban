@@ -1,6 +1,6 @@
 import React, {useContext, useState} from "react";
 import styled from "styled-components";
-import {ModalProvider} from "../../../../context/modalContext";
+import {SmallModalProvider} from "../../../../context/smallModalContext";
 import MyThemeContext from "../../../../context/myThemeContext";
 
 const ContainerStyled = styled.div`
@@ -10,20 +10,19 @@ const ContainerStyled = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 870;
+  z-index: 850;
 `
 
 const ModalStyled = styled.div`
   border-radius: 6px;
   background: ${({bg}) => bg};
   z-index: 900;
-  padding: 32px;
-  width: 480px;
+  width: fit-content;
   gap: 20px;
-  
-  @media (max-width: 768px){
-    width: 375px;
-  }
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  transform: translateX(-50%);
 `
 
 const ModalContainer = ({children}) => {
@@ -31,21 +30,14 @@ const ModalContainer = ({children}) => {
     const themeContext = useContext(MyThemeContext);
 
     const [modal, setModal] = useState();
-    const [modalItem, setModalItem] = useState();
 
     const handleSetModal = data => setModal(data);
 
     const handleGetModal = () => modal;
 
-    const handleSetModalItem = data => setModalItem(data);
-
-    const handleGetModalItem = () => modalItem;
-
     const context = {
         setModal: handleSetModal,
         getModal: handleGetModal,
-        setModalItem: handleSetModalItem,
-        getModalItem: handleGetModalItem,
     }
 
     const handleOutsideClick = e => {
@@ -56,10 +48,10 @@ const ModalContainer = ({children}) => {
     }
 
     return (
-        <ModalProvider value={context}>
+        <SmallModalProvider value={context}>
             {modal &&
                 <ContainerStyled onClick={handleOutsideClick}>
-                    <ModalStyled bg={themeContext.getTheme().lightBgColor} className={'center--v--g flex--column'}>
+                    <ModalStyled bg={themeContext.getTheme().lightBgColor} className={'flex--column'}>
                         {modal}
                     </ModalStyled>
                 </ContainerStyled>
@@ -68,7 +60,7 @@ const ModalContainer = ({children}) => {
             {
                 children
             }
-        </ModalProvider>
+        </SmallModalProvider>
     )
 }
 

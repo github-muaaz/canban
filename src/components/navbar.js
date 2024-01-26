@@ -1,15 +1,16 @@
 import React, {useContext} from "react";
 import styled from "styled-components";
+import {toast} from "react-toastify";
 import MenuSvg from "../assets/icons/menu-dots.svg";
 import BoardContext from "../context/boardContext";
 import ModalContext from "../context/modalContext";
 import Button from "./common/element/button";
 import Icon from "./common/element/icon/icon-img";
+import Icon2 from "./common/element/icon/icon";
 import Text from "./common/element/text";
 import TaskForm from "./common/task/taskForm";
 import BoardForm from "./common/board/boardForm";
 import config from "../config.json";
-import {toast} from "react-toastify";
 import {capitalizeAll} from "../utils/utils";
 import Popover from "./common/element/opover";
 import List from "./common/element/lists/list-2";
@@ -17,19 +18,36 @@ import Span from "./common/element/text/span";
 import http from "../service/httpService";
 import DeleteModalBody from "./common/deleteModalBody";
 import MyThemeContext from "../context/myThemeContext";
+import SidebarBoards from "./common/sidebarBoards";
+import NightModeBtn from "./common/nightModeBtn";
+import SmallModalContext from "../context/smallModalContext";
 
 const DivStyled = styled.div`
   padding: 20px 30px;
-  width: 100%;
+  flex: 1;
   border-bottom: 1px solid var(--lines-light, #E4EBFA);
-  border-left: 1px solid var(--lines-light, #E4EBFA);
   background: ${({bg}) => bg};
+
+  .smaller {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .bigger {
+      display: none;
+    }
+
+    .smaller {
+      display: block;
+    }
+  }
 `
 
 const Navbar = () => {
 
     const boardContext = useContext(BoardContext);
     const modalContext = useContext(ModalContext);
+    const smallModalContext = useContext(SmallModalContext);
     const themeContext = useContext(MyThemeContext);
 
     const board = boardContext.getSelectedBoard();
@@ -41,6 +59,7 @@ const Navbar = () => {
                 .catch(err => toast.error(err.message))
         }
 
+        smallModalContext.setModal(null);
         modalContext.setModalItem({})
         modalContext.setModal(
             <TaskForm
@@ -57,6 +76,8 @@ const Navbar = () => {
                 .then(res => toast.info(res.message))
                 .catch(err => toast.error(err.message))
         }
+
+        smallModalContext.setModal(null);
         modalContext
             .setModal(
                 <BoardForm
@@ -68,6 +89,7 @@ const Navbar = () => {
     }
 
     const handleDeleteBoard = () => {
+        smallModalContext.setModal(null);
         modalContext.setModalItem({})
         modalContext.setModal(<DeleteModalBody
             url={`${config.apiEndpoint}/board/${board?.id}`}
@@ -76,18 +98,61 @@ const Navbar = () => {
         />);
     }
 
+    const handleClick = () => {
+        if (smallModalContext.getModal()) {
+            smallModalContext.setModal(null);
+            return;
+        }
+
+        smallModalContext.setModal(
+            <div style={{width: 'max-content'}}>
+                <SidebarBoards/>
+
+                <div className={'p--15--25'}>
+                    <NightModeBtn/>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <DivStyled className="flex--row align--itm--center justify--s--between">
             {board &&
                 <React.Fragment>
-                    <Text content={capitalizeAll(board?.name)} fs={'24px'} color={themeContext.getTheme().textColor}/>
+                    <React.Fragment>
+                        <Text
+                            className={'bigger'}
+                            content={capitalizeAll(board?.name)} fs={'24px'}
+                            color={themeContext.getTheme().textColor}
+                        />
+
+                        <div className={'smaller'}>
+                            <div onClick={handleClick} className={'flex--row align--itm--center g--8'}>
+                                <Text
+                                    content={capitalizeAll(board?.name ? board?.name : '')}
+                                    fs={'18px'}
+                                    color={themeContext.getTheme().textColor}
+                                />
+
+                                <Icon2 icon={smallModalContext.getModal() ? 'drop--up' : 'drop--down'}/>
+                            </div>
+                        </div>
+                    </React.Fragment>
 
                     <div className="flex--row align--itm--center justify--s--between g--25">
-                        <Button onClick={handleNewTask}>
+                        <Button className={'bigger'} onClick={handleNewTask}>
                             + Add New Task
                         </Button>
 
-                        <Popover component={<Icon icon={MenuSvg}/>}>
+                        <Button padding={'5px 18px 10px'} className={'smaller'} onClick={handleNewTask}>
+                            +
+                        </Button>
+
+                        <Popover
+                            top={'100%'}
+                            right={'100%'}
+                            component={<Icon icon={MenuSvg}/>}
+                        >
                             <List onClick={handleEditBoard}>
                                 <Span ws={'nowrap'} content={'Edit Board'}/>
                             </List>

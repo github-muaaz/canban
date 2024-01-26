@@ -8,6 +8,7 @@ import ModalContainer from "./components/common/element/modal/modalContainer";
 import BoardContainer from "./components/common/board/boardContainer";
 import config from "./config.json";
 import {MyThemeProvider} from "./context/myThemeContext";
+import SmallModalContainer from "./components/common/element/modal/smallModalContainer";
 
 const BoxStyled = styled.div`
   height: 100vh;
@@ -21,15 +22,9 @@ function App() {
     const [theme, setTheme] = useState(config.defaultTheme);
 
     useEffect(() => {
-        console.log(theme)
         localStorage.setItem(config.storageKey, theme);
-    }, [theme])
 
-    useEffect(() => {
-        const setHeights = () => {
-            setHeader(navRef.current);
-            // console.log('navbar h: ', navRef.current.offsetHeight)
-        };
+        const setHeights = () => setHeader(navRef.current);
 
         setHeights();
 
@@ -38,9 +33,7 @@ function App() {
         if (!key)
             localStorage.setItem(config.storageKey, theme);
 
-        function handleWindowResize() {
-            setHeights();
-        }
+        const handleWindowResize = () => setHeights();
 
         navRef.current.addEventListener('resize', handleWindowResize);
 
@@ -52,26 +45,27 @@ function App() {
     }, [theme]);
 
     const handleGetTheme = () => theme;
-    const handleSetTheme = (theme) => setTheme(theme);
+    const handleSetTheme = theme => setTheme(theme);
 
     const themeContext = {
         getTheme: handleGetTheme,
         setTheme: handleSetTheme,
     }
 
-
     return (
         <BoxStyled>
             <MyThemeProvider value={themeContext}>
                 <BoardContainer>
                     <ModalContainer>
-                        <Header isSidebarOpen={isSidebarOpen} myRef={navRef}/>
+                        <SmallModalContainer>
+                            <Header isSidebarOpen={isSidebarOpen} myRef={navRef}/>
 
-                        <Main
-                            isSidebarOpen={isSidebarOpen}
-                            setIsSidebarOpen={setIsSidebarOpen}
-                            header={header}
-                        />
+                            <Main
+                                isSidebarOpen={isSidebarOpen}
+                                setIsSidebarOpen={setIsSidebarOpen}
+                                header={header}
+                            />
+                        </SmallModalContainer>
                     </ModalContainer>
                 </BoardContainer>
                 <GlobalStyle/>

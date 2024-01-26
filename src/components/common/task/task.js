@@ -86,7 +86,8 @@ const ModalBody = () => {
                 setStatuses(res.data.data.statuses)
             })
             .catch(err => toast.error(err.message))
-    }, [modalContext, task?.id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleEdit = () => {
         const apiCall = (data) => {
@@ -137,7 +138,7 @@ const ModalBody = () => {
             <div className={'flex--row align--itm--start justify--s--between g--25'}>
                 <Text content={capitalize(task.title)} color={themeContext.getTheme().textColor}/>
 
-                <Popover component={<Icon margin={'10px 0 0 0'} icon={MenuSvg}/>}>
+                <Popover top={'100%'} right={'100%'} component={<Icon margin={'10px 0 0 0'} icon={MenuSvg}/>}>
                     <List onClick={handleEdit}>
                         <Span ws={'nowrap'} content={'Edit Task'}/>
                     </List>

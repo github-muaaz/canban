@@ -11,6 +11,11 @@ const TextStyled = styled.p`
   line-height: normal;
   margin: ${({margin}) => margin ? margin : 0};
   text-decoration: ${({highlight}) => highlight ? 'line-through' : ''};
+  
+  
+  // @media (max-width: 768px){  
+  //   font-size: ${({fs}) => fs ? fs : '18px'};
+  // }
 `
 
 const Index = ({content, ...rest}) => {

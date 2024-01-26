@@ -65,7 +65,7 @@ const FormBody = ({defaultValues, title, btnTitle}) => {
         }
         else
             formContext.setData(defaultValues);
-    }, [defaultValues, formContext]);
+    }, []);
 
     return (
         <React.Fragment>

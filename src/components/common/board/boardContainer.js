@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import {BoardProvider} from "../../../context/boardContext";
 import http from '../../../service/httpService';
@@ -22,22 +22,20 @@ const BoardContainer = ({children}) => {
         getBoards();
     }, [])
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const handleUpdateBoardData = useCallback((selectedBoard, config) => {
+    const handleUpdateBoardData = () => {
 
         // // backend call
         if (selectedBoard?.id)
             http.get(config.apiEndpoint + '/column/'+selectedBoard?.id)
                 .then(res => setBoardColumns(res.data.data))
-                .catch(() => toast.error('something went wrong'))
-    })
+                .catch(() => toast.error('something went wrong'));
+    }
 
     useEffect(() => {
         // console.log('selected board changed', selectedBoard);
 
-        handleUpdateBoardData(selectedBoard, config);
-        // eslint-disable-next-line no-use-before-define
-    }, [handleUpdateBoardData, selectedBoard])
+        handleUpdateBoardData();
+    }, [selectedBoard])
 
     const handleBoardChange = board => setSelectedBoard(board);
     const handleGetSelectedBoard = () => selectedBoard;

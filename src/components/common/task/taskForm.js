@@ -56,7 +56,7 @@ const FormBody = ({defaultValues, title, btnTitle, board}) => {
             setStatuses(defaultValues.statuses)
         else
             setStatuses(board.columns)
-    }, [board.columns, defaultValues, formContext]);
+    }, []);
 
     return (
         <React.Fragment>

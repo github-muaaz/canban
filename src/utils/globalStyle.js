@@ -53,6 +53,10 @@ export default createGlobalStyle(css`
   .g--25 {
     gap: 25px !important;
   }
+  
+  .red{
+    background-color: red;
+  }
 
   .g--24 {
     gap: 24px !important;
@@ -82,6 +86,10 @@ export default createGlobalStyle(css`
     padding: 25px !important;
   }
   
+  .p--15--25{
+    padding: 15px 25px !important;
+  }
+  
   .f--size--24 {
     font-size: 24px !important;
   }
@@ -107,5 +115,10 @@ export default createGlobalStyle(css`
   @media screen and(max-width: 1440px) and(min-width: 768px){
     
   }
-
+  
+  @media screen and (max-width: 768px){
+    .f--size--24{
+      font-size: 18px;
+    }
+  }
 `);

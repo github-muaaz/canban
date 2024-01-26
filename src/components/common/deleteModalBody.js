@@ -1,11 +1,18 @@
-import {toast} from "react-toastify";
 import {useContext} from "react";
+import {toast} from "react-toastify";
+import styled from "styled-components";
 import ModalContext from "../../context/modalContext";
 import BoardContext from "../../context/boardContext";
 import http from "../../service/httpService";
 import Span from "./element/text/span";
 import Button from "./element/button";
 import Text from "./element/text";
+
+const DivStyled = styled.div`
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`
 
 const DeleteModalBody = ({url, warning, title}) => {
 
@@ -29,7 +36,7 @@ const DeleteModalBody = ({url, warning, title}) => {
         <Text color={'var(--red, #EA5555)'} content={title}/>
         <Span className={'l--height--23 font--weight--5'} content={warning}/>
 
-        <div className={'flex--row g--16'}>
+        <DivStyled className={'flex--row g--16'}>
             <Button
                 onClick={handleDelete}
                 w={'100%'}
@@ -49,7 +56,7 @@ const DeleteModalBody = ({url, warning, title}) => {
             >
                 Cancel
             </Button>
-        </div>
+        </DivStyled>
     </div>
 }
 

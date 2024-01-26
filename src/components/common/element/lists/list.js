@@ -4,6 +4,7 @@ import BoardContext from "../../../../context/boardContext";
 import Icon from "../icon/icon";
 import Span from "../text/span";
 import {capitalizeAll} from "../../../../utils/utils";
+import MyThemeContext from "../../../../context/myThemeContext";
 
 const LiStyled = styled.li`
   display: flex;
@@ -17,14 +18,24 @@ const LiStyled = styled.li`
   span {
     color: ${({isActive}) => isActive ? 'var(--white, #FFF)' : 'var(--medium-grey, #828FA3)'};
   }
+  
   :hover{
-    background: var(--main-purple-hover, A8A4FFFF);
+    background: ${({hoverBg}) => hoverBg};
+    
+    span{
+      color: ${({hoverColor}) => hoverColor};
+    }
+    
+    .icon{
+      background: ${({hoverColor}) => hoverColor};
+    }
   }
 `
 
 const List = ({item}) => {
 
     const boardContext = useContext(BoardContext);
+    const themeContext = useContext(MyThemeContext);
 
     const isActive = (context, id) => context && context.getSelectedBoard()?.id === id;
 
@@ -34,6 +45,8 @@ const List = ({item}) => {
         <LiStyled
             onClick={() => boardContext.onBoardChanged(item)}
             isActive={isActive(boardContext, item.id)}
+            hoverBg={themeContext.getTheme().darkBgColor}
+            hoverColor={themeContext.getTheme().btnHoverColor}
         >
             <Icon icon={getIcon(boardContext, item.id)}/>
 
