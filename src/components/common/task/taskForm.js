@@ -9,21 +9,37 @@ import React, {useContext, useEffect, useState} from "react";
 import FormContext from "../../../context/formContext";
 import ModalContext from "../../../context/modalContext";
 import BoardContext from "../../../context/boardContext";
+import Icon from "../element/icon/icon";
 
 const TaskForm = ({board, apiCall, ...rest}) => {
 
     const modalContext = useContext(ModalContext);
     const boardContext = useContext(BoardContext);
 
-    const handleSubmit = (e, formData) => {
+    const validate = (data) => {
+        const errors = {};
+        if (!data.title?.trim())
+            errors.title = 'CANNOT BE EMPTY';
+
+        return errors;
+    }
+
+    const handleSubmit = (e, formData, setErrors) => {
+
+        const errors = validate(formData)
+
+        if (!(errors && Object.keys(errors).length === 0)){
+            setErrors(errors);
+            return;
+        }
 
         const data = {
             id: formData.id,
             boardId: board.id,
-            title: formData.title.toLowerCase(),
+            title: formData.title?.toLowerCase().trim(),
             statusId: formData.statusId,
-            description: formData.description,
-            subtasks: formData.subtasks?.filter(st => st.title.trim()) || [],
+            description: formData.description?.trim(),
+            subtasks: formData.subtasks?.filter(st => st.title?.trim()) || [],
         }
 
         // backend call
@@ -43,9 +59,11 @@ const TaskForm = ({board, apiCall, ...rest}) => {
 const FormBody = ({defaultValues, title, btnTitle, board}) => {
 
     const [statuses, setStatuses] = useState([]);
+    const modalContext = useContext(ModalContext);
 
     const formContext = useContext(FormContext);
     const task = formContext.getData();
+    const errors = formContext.getErrors();
 
     useEffect(() => {
         formContext.setData(defaultValues);
@@ -59,13 +77,18 @@ const FormBody = ({defaultValues, title, btnTitle, board}) => {
 
     return (
         <React.Fragment>
-            <Text content={title}/>
+            <div className={'flex--row justify--s--between align--itm--center'}>
+                <Text content={title}/>
+
+                <Icon onClick={() => modalContext.setModal(null)} icon={'close'}/>
+            </div>
 
             <Input
                 placeholder={'e.g. Take coffee break'}
                 name={'title'}
                 label={'Title'}
                 defaultValue={task?.title}
+                error={errors?.title}
             />
 
             <Textarea
@@ -73,6 +96,7 @@ const FormBody = ({defaultValues, title, btnTitle, board}) => {
                 name={'description'}
                 label={'Description'}
                 defaultValue={task?.description}
+                error={errors?.description}
             />
 
             <ListInput
@@ -82,6 +106,7 @@ const FormBody = ({defaultValues, title, btnTitle, board}) => {
                 btnLabel={'+ Add New Subtask'}
                 placeholder={'e.g. Make coffee'}
                 defaultValue={task?.subtasks}
+                error={errors?.subtasks}
             />
 
             <Select

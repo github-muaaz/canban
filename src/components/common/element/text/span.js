@@ -9,7 +9,9 @@ const SpanStyled = styled.span`
   font-weight: 700;
   line-height: normal;
   display: ${({display}) => display ? display : 'unset'};
-  white-space: ${({ws}) => ws ? ws : 'unset'}
+  white-space: ${({ws}) => ws ? ws : 'unset'};
+  background: ${({danger}) => danger ? '--var(--red, #EA5555)' : ''};
+  color: ${({danger}) => danger ? '--var(--red-hover, #FF9898)' : ''};
 `
 
 const Span = ({content, ...rest}) => {

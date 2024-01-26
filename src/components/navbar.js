@@ -33,6 +33,8 @@ const DivStyled = styled.div`
   }
 
   @media (max-width: 768px) {
+    padding: 15px 20px;
+    
     .bigger {
       display: none;
     }
@@ -53,10 +55,10 @@ const Navbar = () => {
     const board = boardContext.getSelectedBoard();
 
     const handleNewTask = () => {
-        const apiCall = (data) => {
-            http.post(`${config.apiEndpoint}/task`, data)
-                .then(res => toast.info(res.message))
-                .catch(err => toast.error(err.message))
+        const apiCall = async (data) => {
+            await http.post(`${config.apiEndpoint}/task`, data)
+                .then(res => toast.success(res.data.message))
+                .catch(err => toast.error(err.response.data.errors[0].msg))
         }
 
         smallModalContext.setModal(null);
@@ -71,10 +73,10 @@ const Navbar = () => {
     }
 
     const handleEditBoard = () => {
-        const apiCall = (data) => {
-            http.put(`${config.apiEndpoint}/board/${data.id}`, data)
-                .then(res => toast.info(res.message))
-                .catch(err => toast.error(err.message))
+        const apiCall = async (data) => {
+            await http.put(`${config.apiEndpoint}/board/${data.id}`, data)
+                .then(res => toast.success(res.data.message))
+                .catch(err => toast.error(err.response.data.errors[0].msg))
         }
 
         smallModalContext.setModal(null);
@@ -96,6 +98,8 @@ const Navbar = () => {
             title={'Delete this board?'}
             warning={'Are you sure you want to delete the ‘Platform Launch’ board? This action will remove all columns and tasks and cannot be reversed.'}
         />);
+
+        boardContext.updateBoards();
     }
 
     const handleClick = () => {
@@ -139,7 +143,7 @@ const Navbar = () => {
                         </div>
                     </React.Fragment>
 
-                    <div className="flex--row align--itm--center justify--s--between g--25">
+                    <div className="flex--row align--itm--center justify--s--between nav--g--25">
                         <Button className={'bigger'} onClick={handleNewTask}>
                             + Add New Task
                         </Button>

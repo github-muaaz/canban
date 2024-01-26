@@ -22,11 +22,11 @@ const BoardContainer = ({children}) => {
         getBoards();
     }, [])
 
-    const handleUpdateBoardData = () => {
+    const handleUpdateBoardData = async () => {
 
         // // backend call
         if (selectedBoard?.id)
-            http.get(config.apiEndpoint + '/column/'+selectedBoard?.id)
+            await http.get(config.apiEndpoint + '/column/'+selectedBoard?.id)
                 .then(res => setBoardColumns(res.data.data))
                 .catch(() => toast.error('something went wrong'));
     }

@@ -56,10 +56,10 @@ const SubtaskRow = ({subtask, task, setTask}) => {
     const boardContext = useContext(BoardContext);
     const themeContext = useContext(MyThemeContext);
 
-    const handleChecked = () => {
+    const handleChecked = async () => {
         // backend call
-        http.get(`${config.apiEndpoint}/subtask/${subtask.id}/${!subtask.isCompleted}`)
-            .catch(err => toast.error(err.message))
+        await http.get(`${config.apiEndpoint}/subtask/${subtask.id}/${!subtask.isCompleted}`)
+            .catch(err => toast.error(err.response.data.errors[0].msg))
 
         const boardColumns = [...boardContext.getBoardColumns()];
 

@@ -41,6 +41,10 @@ export default createGlobalStyle(css`
   .align--itm--start {
     align-items: flex-start !important;
   }
+  
+  .red{
+    background: red;
+  }
 
   .justify--s--between {
     justify-content: space-between !important;
@@ -53,9 +57,9 @@ export default createGlobalStyle(css`
   .g--25 {
     gap: 25px !important;
   }
-  
-  .red{
-    background-color: red;
+
+  .nav--g--25{
+    gap: 25px !important;
   }
 
   .g--24 {
@@ -112,13 +116,17 @@ export default createGlobalStyle(css`
   }
   
   
-  @media screen and(max-width: 1440px) and(min-width: 768px){
-    
-  }
-  
-  @media screen and (max-width: 768px){
+  @media (max-width: 768px){
     .f--size--24{
-      font-size: 18px;
+      font-size: 18px !important;
+    }
+    
+    .g--25{
+      gap: 20px !important;
+    }
+    
+    .nav--g--25{
+      gap: 5px !important;
     }
   }
 `);

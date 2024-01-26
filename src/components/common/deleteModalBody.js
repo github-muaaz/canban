@@ -23,10 +23,10 @@ const DeleteModalBody = ({url, warning, title}) => {
         modalContext.setModal(null);
     }
 
-    const handleDelete = () => {
-        http.delete(url)
-            .then(res => toast.info(res.message))
-            .catch(err => toast.error(err.message));
+    const handleDelete = async () => {
+        await http.delete(url)
+            .then(res => toast.success(res.data.message))
+            .catch(err => toast.error(err.response.data.errors[0].msg));
 
         modalContext.setModal(null);
         boardContext.updateBoards();

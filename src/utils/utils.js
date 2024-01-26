@@ -23,9 +23,13 @@ export const getCompletedCount = items => {
 
 
 export const capitalizeAll = (str) => {
+    if (!str)
+        return str;
     return str.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
 }
 
 export const capitalize = (str) => {
+    if (!str)
+        return str;
     return str.charAt(0).toUpperCase() + str.substring(1);
 }

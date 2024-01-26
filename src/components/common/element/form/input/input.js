@@ -3,12 +3,13 @@ import styled from "styled-components";
 import FormContext from "../../../../../context/formContext";
 import Label from "../label";
 import MyThemeContext from "../../../../../context/myThemeContext";
+import Span from "../../text/span";
 
 const InputStyled = styled.input`
   background: ${({bg}) => bg};
   color: ${({color}) => color};
   border-radius: 4px;
-  border: 1px solid rgba(130, 143, 163, 0.25);
+  border: solid ${({error}) => error ? 'rgb(122, 40, 44) 2px' : 'rgba(130, 143, 163, 0.25) 1px'};
   padding: 8px 16px;
   font-size: 13px;
   font-style: normal;
@@ -18,12 +19,13 @@ const InputStyled = styled.input`
   min-width: 100%;
 `
 
-const Input = ({name, label, onChange, hidden, ...rest}) => {
+const Input = ({name, label, onChange, hidden, error, ...rest}) => {
 
     const formContext = useContext(FormContext);
     const themeContext = useContext(MyThemeContext);
 
     const handleChange = e => {
+        console.log('aa',e.target.value)
         if (onChange)
             onChange(e);
         else {
@@ -46,6 +48,7 @@ const Input = ({name, label, onChange, hidden, ...rest}) => {
                         }
 
                         <InputStyled
+                            error={error}
                             id={name}
                             name={name}
                             {...rest}
@@ -53,6 +56,10 @@ const Input = ({name, label, onChange, hidden, ...rest}) => {
                             color={themeContext.getTheme().textColor2}
                             onChange={handleChange}
                         />
+
+                        {error &&
+                            <Span fs={'10px'} color={'rgb(122, 40, 44)'} content={error}/>
+                        }
                     </div>
             }
         </React.Fragment>

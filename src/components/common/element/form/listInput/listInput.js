@@ -28,7 +28,7 @@ const ListInput = ({name, label, ...rest}) => {
     )
 }
 
-const ListBody = ({name, btnLabel, inputName = 'value', placeholder, defaultValue}) => {
+const ListBody = ({name, btnLabel, inputName = 'value', error, placeholder, defaultValue}) => {
 
     const formContext = useContext(FormContext);
     const themeContext = useContext(MyThemeContext);

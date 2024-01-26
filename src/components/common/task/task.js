@@ -6,6 +6,7 @@ import ModalContext from "../../../context/modalContext";
 import Text from "../element/text";
 import Span from "../element/text/span";
 import Icon from "../element/icon/icon-img";
+import Icon2 from "../element/icon/icon";
 import MenuSvg from "../../../assets/icons/menu-dots.svg";
 import SubtaskBox from "./subtaskBox";
 import Select from "../element/form/select";
@@ -85,15 +86,15 @@ const ModalBody = () => {
                 modalContext.setModalItem(res.data.data)
                 setStatuses(res.data.data.statuses)
             })
-            .catch(err => toast.error(err.message))
+            .catch(err => toast.error(err.response.data.errors[0].msg))
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleEdit = () => {
-        const apiCall = (data) => {
-            http.put(`${config.apiEndpoint}/task/${data.id}`, data)
-                .then(res => toast.info(res.message))
-                .catch(err => toast.error(err.message))
+        const apiCall = async (data) => {
+            await http.put(`${config.apiEndpoint}/task/${data.id}`, data)
+                .then(res => toast.success(res.data.message))
+                .catch(err => toast.error(err.response.data.errors[0].msg))
         };
 
         modalContext.setModal(
@@ -107,7 +108,7 @@ const ModalBody = () => {
         );
     }
 
-    const handleStatusChange = e => {
+    const handleStatusChange = async (e) => {
         const statusId = e.target.value;
 
         const oldStatusId = task.statusId;
@@ -118,8 +119,8 @@ const ModalBody = () => {
         modalContext.setModalItem(newTask);
 
         // backend call
-        http.get(config.apiEndpoint + '/task/' + task.id + '/' + statusId)
-            .catch(err => toast.error(err.message))
+        await http.get(config.apiEndpoint + '/task/' + task.id + '/' + statusId)
+            .catch(err => toast.error(err.response.data.errors[0].msg))
 
         boardContext.updateBoard(newTask, oldStatusId);
     }
@@ -133,12 +134,18 @@ const ModalBody = () => {
         />);
     }
 
+    const handleClose = () => modalContext.setModal(null);
+
     return (
         <React.Fragment>
             <div className={'flex--row align--itm--start justify--s--between g--25'}>
                 <Text content={capitalize(task.title)} color={themeContext.getTheme().textColor}/>
 
                 <Popover top={'100%'} right={'100%'} component={<Icon margin={'10px 0 0 0'} icon={MenuSvg}/>}>
+                    <List onClick={handleClose}>
+                        <Span ws={'nowrap'} content={'Close Modal'}/>
+                    </List>
+
                     <List onClick={handleEdit}>
                         <Span ws={'nowrap'} content={'Edit Task'}/>
                     </List>

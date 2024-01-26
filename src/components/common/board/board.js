@@ -37,7 +37,7 @@ const Board = () => {
 
     const noSelectedBoard = boardContext.getSelectedBoard();
 
-    const onDrag = (result) => {
+    const onDrag = async (result) => {
         if (!result.destination) return;
 
         const {source, destination, draggableId} = result;
@@ -46,8 +46,8 @@ const Board = () => {
             const sourceColIndex = boardColumns.findIndex(c => c.id === source.droppableId);
             const destinationColIndex = boardColumns.findIndex(c => c.id === destination.droppableId);
 
-            http.get(config.apiEndpoint + '/task/' + draggableId + '/' + destination.droppableId)
-                .catch(err => toast.error(err.message))
+            await http.get(config.apiEndpoint + '/task/' + draggableId + '/' + destination.droppableId)
+                .catch(err => toast.error(err.response.data.errors[0].msg))
 
             const sourceCol = boardColumns[sourceColIndex];
             const destinationCol = boardColumns[destinationColIndex];
@@ -67,10 +67,12 @@ const Board = () => {
     }
 
     const handleClick = () => {
-        const apiCall = (data) => {
-            http.put(`${config.apiEndpoint}/board/${data.id}`, data)
-                .then(res => toast.info(res.message))
-                .catch(err => toast.error(err.message))
+        const apiCall = async (data) => {
+            await http.put(`${config.apiEndpoint}/board/${data.id}`, data)
+                .then(res => toast.success(res.data.message))
+                .catch(err => toast.error(err.response.data.errors[0].msg))
+
+            boardContext.updateBoards();
         }
         modalContext
             .setModal(

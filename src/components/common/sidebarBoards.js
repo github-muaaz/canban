@@ -33,10 +33,12 @@ const SidebarBoards = () => {
     const boards = boardContext.getBoards();
 
     const handleClick = () => {
-        const apiCall = (data) => {
-            http.post(`${config.apiEndpoint}/board`, data)
-                .then(res => toast.info(res.message))
-                .catch(err => toast.error(err.message))
+        const apiCall = async (data) => {
+            await http.post(`${config.apiEndpoint}/board`, data)
+                .then(res => toast.success(res.data.message))
+                .catch(err => {
+                    toast.error(err.response.data.errors[0].msg)
+                })
         }
 
         modalContext

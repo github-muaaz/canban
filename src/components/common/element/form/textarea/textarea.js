@@ -3,10 +3,11 @@ import React, {useContext} from "react";
 import FormContext from "../../../../../context/formContext";
 import Label from "../label";
 import MyThemeContext from "../../../../../context/myThemeContext";
+import Span from "../../text/span";
 
 const TextareaStyled = styled.textarea`
   border-radius: 4px;
-  border: 1px solid rgba(130, 143, 163, 0.25);
+  border: solid ${({error}) => error ? 'rgb(122, 40, 44) 2px' : 'rgba(130, 143, 163, 0.25) 1px'};
   background: ${({bg}) => bg};
   color: ${({color}) => color};
   padding: 8px 16px;
@@ -19,7 +20,7 @@ const TextareaStyled = styled.textarea`
   min-height: 112px;
 `
 
-const Textarea = ({name, label, ...rest}) => {
+const Textarea = ({name, label, error, ...rest}) => {
 
     const formContext = useContext(FormContext);
     const themeContext = useContext(MyThemeContext);
@@ -38,6 +39,7 @@ const Textarea = ({name, label, ...rest}) => {
             }
 
             <TextareaStyled
+                error={error}
                 id={name}
                 name={name}
                 {...rest}
@@ -45,6 +47,10 @@ const Textarea = ({name, label, ...rest}) => {
                 bg={themeContext.getTheme().lightBgColor}
                 color={themeContext.getTheme().textColor2}
             />
+
+            {error &&
+                <Span fs={'10px'} color={'rgb(122, 40, 44)'} content={error}/>
+            }
         </div>
     )
 }

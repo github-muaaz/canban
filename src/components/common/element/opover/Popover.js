@@ -47,7 +47,7 @@ const Popover = ({component, children, ...rest}) => {
 
     return (
         <ContainerStyled {...rest}>
-            <div onClick={handleOpen}>
+            <div className={'flex--row align--itm--center h--100'} onClick={handleOpen}>
                 {component}
             </div>
 
