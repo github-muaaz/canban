@@ -26,8 +26,6 @@ const TaskForm = ({board, apiCall, ...rest}) => {
             subtasks: formData.subtasks?.filter(st => st.title.trim()) || [],
         }
 
-        console.log(apiCall)
-
         // backend call
         apiCall(data);
 
