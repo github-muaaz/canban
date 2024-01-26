@@ -56,6 +56,7 @@ const FormBody = ({defaultValues, title, btnTitle, board}) => {
             setStatuses(defaultValues.statuses)
         else
             setStatuses(board.columns)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

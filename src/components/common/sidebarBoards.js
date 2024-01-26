@@ -51,6 +51,7 @@ const SidebarBoards = () => {
 
     useEffect(() => {
         boardContext.onBoardChanged(boards[0])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [boards])
 
     return (

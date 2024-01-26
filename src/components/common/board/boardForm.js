@@ -47,11 +47,7 @@ const FormBody = ({defaultValues, title, btnTitle}) => {
 
     const [columns, setColumns] = useState();
 
-    // console.log('board ',board)
-
     useEffect(() => {
-        console.log('def', defaultValues)
-
         if (!defaultValues) {
             // backend call
             http.get(`${config.apiEndpoint}/column/common`)
@@ -60,11 +56,10 @@ const FormBody = ({defaultValues, title, btnTitle}) => {
                     formContext.setData({columns: res.data.data});
                 })
                 .catch(err => toast.error(err.message))
-            // const data = getCommonCols();
-            // setColumns(data);
         }
         else
             formContext.setData(defaultValues);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

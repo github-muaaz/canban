@@ -35,6 +35,7 @@ const BoardContainer = ({children}) => {
         // console.log('selected board changed', selectedBoard);
 
         handleUpdateBoardData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedBoard])
 
     const handleBoardChange = board => setSelectedBoard(board);
