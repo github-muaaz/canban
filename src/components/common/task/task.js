@@ -6,7 +6,6 @@ import ModalContext from "../../../context/modalContext";
 import Text from "../element/text";
 import Span from "../element/text/span";
 import Icon from "../element/icon/icon-img";
-import Icon2 from "../element/icon/icon";
 import MenuSvg from "../../../assets/icons/menu-dots.svg";
 import SubtaskBox from "./subtaskBox";
 import Select from "../element/form/select";
