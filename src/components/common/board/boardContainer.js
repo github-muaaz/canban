@@ -11,6 +11,7 @@ const BoardContainer = ({children}) => {
     const [boards, setBoards] = useState([])
 
     const getBoards = () => {
+        console.log('okk')
         // backend call
         http
             .get(config.apiEndpoint + "/board",)
@@ -38,6 +39,12 @@ const BoardContainer = ({children}) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedBoard])
 
+    const handleUpdateSelectedBoard = async () => {
+        await http.get(config.apiEndpoint + '/board/'+selectedBoard?.id)
+            .then(res => setSelectedBoard(res.data.data))
+            .catch(err => toast.error(err.response.data.errors[0].msg))
+    }
+
     const handleBoardChange = board => setSelectedBoard(board);
     const handleGetSelectedBoard = () => selectedBoard;
     const handleGetBoardColumns = () => boardColumns;
@@ -58,10 +65,11 @@ const BoardContainer = ({children}) => {
 
 
     const handleGetBoards = () => boards;
-    const handleUpdateBoards = () => {
+    const handleUpdateBoards = async () => {
         // backend call
         getBoards();
 
+        handleUpdateSelectedBoard();
         console.log('boards updata')
     }
 

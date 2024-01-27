@@ -31,6 +31,7 @@ const SidebarBoards = () => {
     const modalContext = useContext(ModalContext);
 
     const boards = boardContext.getBoards();
+    const selectedBoard = boardContext.getSelectedBoard();
 
     const handleClick = () => {
         const apiCall = async (data) => {
@@ -52,7 +53,7 @@ const SidebarBoards = () => {
 
 
     useEffect(() => {
-        boardContext.onBoardChanged(boards[0])
+        boardContext.onBoardChanged(selectedBoard || boards[0])
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [boards])
 

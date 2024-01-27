@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
 import ModalContext from "../../../context/modalContext";
-import BoardContext from "../../../context/boardContext";
 import Form from "../element/form/form";
 import FormContext from "../../../context/formContext";
 import Text from "../element/text";
@@ -15,7 +14,6 @@ import Icon from "../element/icon/icon";
 const BoardForm = ({apiCall, ...rest}) => {
 
     const modalContext = useContext(ModalContext);
-    const boardContext = useContext(BoardContext);
 
     const validate = (data) => {
         const errors = {};
@@ -44,7 +42,6 @@ const BoardForm = ({apiCall, ...rest}) => {
         apiCall(data);
 
         modalContext.setModal(null);
-        boardContext.updateBoards();
     }
 
     return (
