@@ -57,7 +57,10 @@ const Navbar = () => {
     const handleNewTask = () => {
         const apiCall = async (data) => {
             await http.post(`${config.apiEndpoint}/task`, data)
-                .then(res => toast.success(res.data.message))
+                .then(res => {
+                    toast.success(res.data.message);
+                    boardContext.updateBoardData();
+                })
                 .catch(err => toast.error(err.response.data.errors[0].msg))
         }
 

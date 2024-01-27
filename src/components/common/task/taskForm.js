@@ -8,13 +8,11 @@ import Form from "../element/form/form";
 import React, {useContext, useEffect, useState} from "react";
 import FormContext from "../../../context/formContext";
 import ModalContext from "../../../context/modalContext";
-import BoardContext from "../../../context/boardContext";
 import Icon from "../element/icon/icon";
 
 const TaskForm = ({board, apiCall, ...rest}) => {
 
     const modalContext = useContext(ModalContext);
-    const boardContext = useContext(BoardContext);
 
     const validate = (data) => {
         const errors = {};
@@ -46,7 +44,6 @@ const TaskForm = ({board, apiCall, ...rest}) => {
         apiCall(data);
 
         modalContext.setModal(null);
-        boardContext.updateBoardData();
     }
 
     return (

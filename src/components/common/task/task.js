@@ -92,7 +92,10 @@ const ModalBody = () => {
     const handleEdit = () => {
         const apiCall = async (data) => {
             await http.put(`${config.apiEndpoint}/task/${data.id}`, data)
-                .then(res => toast.success(res.data.message))
+                .then(res => {
+                    toast.success(res.data.message);
+                    boardContext.updateBoardData();
+                })
                 .catch(err => toast.error(err.response.data.errors[0].msg))
         };
 
