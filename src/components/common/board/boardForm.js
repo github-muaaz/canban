@@ -35,7 +35,7 @@ const BoardForm = ({apiCall, ...rest}) => {
         const data = {
             id: formData.id,
             name: formData.name,
-            columns: formData?.columns?.map(col => col?.name?.toLowerCase()),
+            columns: formData?.columns?.filter(col => col.name).map(col => col.name?.toLowerCase()?.trim())
         }
 
         // // backend call
