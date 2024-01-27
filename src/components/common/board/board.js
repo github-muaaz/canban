@@ -37,7 +37,7 @@ const Board = () => {
 
     const noSelectedBoard = boardContext.getSelectedBoard();
 
-    const onDrag = async (result) => {
+    const onDrag = (result) => {
         if (!result.destination) return;
 
         const {source, destination, draggableId} = result;
@@ -46,7 +46,7 @@ const Board = () => {
             const sourceColIndex = boardColumns.findIndex(c => c.id === source.droppableId);
             const destinationColIndex = boardColumns.findIndex(c => c.id === destination.droppableId);
 
-            await http.get(config.apiEndpoint + '/task/' + draggableId + '/' + destination.droppableId)
+            http.get(config.apiEndpoint + '/task/' + draggableId + '/' + destination.droppableId)
                 .catch(err => toast.error(err.response.data.errors[0].msg))
 
             const sourceCol = boardColumns[sourceColIndex];
