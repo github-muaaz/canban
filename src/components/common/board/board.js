@@ -69,10 +69,12 @@ const Board = () => {
     const handleClick = () => {
         const apiCall = async (data) => {
             await http.put(`${config.apiEndpoint}/board/${data.id}`, data)
-                .then(res => toast.success(res.data.message))
+                .then(res => {
+                    toast.success(res.data.message);
+                    boardContext.updateBoards();
+                })
                 .catch(err => toast.error(err.response.data.errors[0].msg))
 
-            boardContext.updateBoards();
         }
         modalContext
             .setModal(
