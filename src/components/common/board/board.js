@@ -94,7 +94,7 @@ const Board = () => {
                     ? <EmptyBoards/>
                     : <BoxStyled className={'p--25 h--100 g--25'}>
                         <DragDropContext onDragEnd={onDrag}>
-                            {boardColumns?.map((column, index) =>
+                            {boardColumns?.sort((a, b) => a.orderNum - b.orderNum)?.map((column, index) =>
                                 <Column column={column} key={column.name} index={index}/>
                             )}
 
