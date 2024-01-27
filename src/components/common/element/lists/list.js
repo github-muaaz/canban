@@ -5,6 +5,7 @@ import Icon from "../icon/icon";
 import Span from "../text/span";
 import {capitalizeAll} from "../../../../utils/utils";
 import MyThemeContext from "../../../../context/myThemeContext";
+import SmallModalContext from "../../../../context/smallModalContext";
 
 const LiStyled = styled.li`
   display: flex;
@@ -35,15 +36,21 @@ const LiStyled = styled.li`
 const List = ({item}) => {
 
     const boardContext = useContext(BoardContext);
+    const smallModalContext = useContext(SmallModalContext);
     const themeContext = useContext(MyThemeContext);
 
     const isActive = (context, id) => context && context.getSelectedBoard()?.id === id;
 
     const getIcon = (context, id) => isActive(context, id) ? 'board--active' : 'board';
 
+    const handleClick = () => {
+        boardContext.onBoardChanged(item);
+        smallModalContext.setModal(null);
+    }
+
     return (
         <LiStyled
-            onClick={() => boardContext.onBoardChanged(item)}
+            onClick={handleClick}
             isActive={isActive(boardContext, item.id)}
             hoverBg={themeContext.getTheme().darkBgColor}
             hoverColor={themeContext.getTheme().btnHoverColor}
