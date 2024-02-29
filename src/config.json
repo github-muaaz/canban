@@ -1,5 +1,5 @@
 {
-  "apiEndpoint": "https://kanban-backend-production-55a1.up.railway.app/api",
+  "apiEndpoint": "https://kanban-backend-production-2ab0.up.railway.app/api",
   "storageKey": "auth",
   "darkTheme": {
     "name": "dark",
