@@ -14,7 +14,7 @@ const DivStyled = styled.div`
   }
 `
 
-const DeleteModalBody = ({url, warning, title}) => {
+const DeleteModalBody = ({url, warning, title, board}) => {
 
     const modalContext = useContext(ModalContext);
     const boardContext = useContext(BoardContext);
@@ -25,11 +25,14 @@ const DeleteModalBody = ({url, warning, title}) => {
 
     const handleDelete = async () => {
         await http.delete(url)
-            .then(res => toast.success(res.data.message))
+            .then(res => {
+                toast.success(res.data.message);
+
+                boardContext.deleteBoard(board.id);
+            })
             .catch(err => toast.error(err.response.data.errors[0].msg));
 
         modalContext.setModal(null);
-        boardContext.updateBoards();
     }
 
     return <div className={'flex--column g--24'}>

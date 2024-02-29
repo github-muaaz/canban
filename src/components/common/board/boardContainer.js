@@ -23,20 +23,19 @@ const BoardContainer = ({children}) => {
         getBoards();
     }, [])
 
-    const handleUpdateBoardData = async () => {
 
-        // // backend call
-        if (selectedBoard?.id)
-            await http.get(config.apiEndpoint + '/column/'+selectedBoard?.id)
-                .then(res => setBoardColumns(res.data.data))
-                .catch(() => toast.error('something went wrong'));
-    }
 
     useEffect(() => {
+        const handleUpdateBoardData = () => {
+            // // backend call
+            if (selectedBoard?.id)
+                http.get(config.apiEndpoint + '/column/'+selectedBoard?.id)
+                    .then(res => setBoardColumns(res.data.data))
+                    .catch(() => toast.error('something went wrong'));
+        }
         // console.log('selected board changed', selectedBoard);
 
         handleUpdateBoardData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedBoard])
 
     const handleUpdateSelectedBoard = async () => {
@@ -65,12 +64,24 @@ const BoardContainer = ({children}) => {
 
 
     const handleGetBoards = () => boards;
-    const handleUpdateBoards = async () => {
+    const handleUpdateBoards = () => {
         // backend call
         getBoards();
 
-        handleUpdateSelectedBoard();
-        console.log('boards updata')
+        handleUpdateSelectedBoard().then(r => console.log(''));
+        console.log('boards update')
+    }
+
+    const handleAddBoard = (data) => {
+        setBoards(prev => [...prev, data]);
+    }
+
+    const handleDeleteBoard = (id) => {
+        setBoards(prev => [...prev.filter(board => board.id !== id)]);
+
+        setSelectedBoard(boards[0]);
+
+        getBoards();
     }
 
     const boardContext = {
@@ -79,9 +90,11 @@ const BoardContainer = ({children}) => {
         getSelectedBoard: handleGetSelectedBoard,
         onBoardChanged: handleBoardChange,
         updateBoard: handleUpdateBoard,
-        updateBoardData: handleUpdateBoardData,
+        updateBoardData: handleUpdateSelectedBoard,
         getBoards: handleGetBoards,
         updateBoards: handleUpdateBoards,
+        addBoard: handleAddBoard,
+        deleteBoard: handleDeleteBoard,
     };
 
     return(

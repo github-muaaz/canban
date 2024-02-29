@@ -102,6 +102,7 @@ const Navbar = () => {
         modalContext.setModalItem({})
         modalContext.setModal(<DeleteModalBody
             url={`${config.apiEndpoint}/board/${board?.id}`}
+            board={board}
             title={'Delete this board?'}
             warning={'Are you sure you want to delete the ‘Platform Launch’ board? This action will remove all columns and tasks and cannot be reversed.'}
         />);

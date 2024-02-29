@@ -36,10 +36,14 @@ const SidebarBoards = () => {
     const handleClick = () => {
         const apiCall = async (data) => {
             await http.post(`${config.apiEndpoint}/board`, data)
-                .then(res => toast.success(res.data.message))
+                .then(res =>{
+                    boardContext.addBoard(res.data.data);
+                    toast.success(res.data.message);
+                })
                 .catch(err => {
                     toast.error(err.response.data.errors[0].msg)
                 })
+
         }
 
         modalContext
@@ -54,8 +58,7 @@ const SidebarBoards = () => {
 
     useEffect(() => {
         boardContext.onBoardChanged(selectedBoard || boards[0])
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [boards])
+    }, [boards, boardContext, selectedBoard])
 
     return (
         <div style={{padding: '20px 20px 0 0'}}>
